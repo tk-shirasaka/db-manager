@@ -1,0 +1,21 @@
+ace-editor {
+    min-height: 600px;
+    width: 100%;
+}
+
+mat-icon {
+    cursor: pointer;
+}
+
+table.table {
+    white-space: nowrap;
+}
+
+table.table-dark {
+    width: 10px;
+}
+
+table.table-responsive {
+    width: calc(100% - 30px);
+    max-width: 95%;
+}

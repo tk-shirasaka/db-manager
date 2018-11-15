@@ -1,0 +1,39 @@
+<mat-tab-group>
+  <mat-tab label="クエリ">
+    <ace-editor [(text)]="result.query" mode="sql" (keydown.control.enter)="execute()"></ace-editor>
+  </mat-tab>
+  <mat-tab label="実行結果" *ngIf="result.data && result.data.length">
+    <table class="table table-sm table-dark float-left">
+      <thead>
+        <tr><th>#</th></tr>
+        <tr *ngFor="let row of result.data; index as i"><td>{{ i + 1 }}</td></tr>
+      </thead>
+    </table>
+    <table class="table table-sm table-striped table-responsive">
+      <thead class="thead-dark">
+        <tr>
+          <th *ngFor="let header of result.header">{{ header }}</th>
+        </tr>
+      </thead>
+      <tbody #tabledata>
+        <tr *ngFor="let row of result.data; index as i">
+          <td *ngFor="let header of result.header">{{ row[header] === null ? 'NULL' : row[header] }}</td>
+        </tr>
+      </tbody>
+    </table>
+    {{ result.count }} 件中 {{ result.data.length }} 件のレコードを表示
+    <mat-icon class="float-right text-warning" (click)="copy(tabledata)">file_copy</mat-icon>
+  </mat-tab>
+</mat-tab-group>
+<div class="d-inline-block m-3">
+  <button mat-icon-button color="primary" [disabled]="!history" (click)="setHistory(-1)"><mat-icon>fast_rewind</mat-icon></button>
+  <button mat-icon-button color="primary" (click)="execute()"><mat-icon>play_arrow</mat-icon></button>
+  <button mat-icon-button color="primary" [disabled]="!result.history || (result.history.length - 1 <= history)" (click)="setHistory(1)"><mat-icon>fast_forward</mat-icon></button>
+</div>
+<mat-form-field *ngIf="table">
+  <mat-select [(value)]="queryType" placeholder="操作">
+    <mat-option [value]="permission" [disabled]="connection.permissions.indexOf(permission) < 0" (click)="setTemplate()" *ngFor="let permission of permissions">{{ permission | uppercase }}</mat-option>
+  </mat-select>
+</mat-form-field>
+<pre class="mt-2 alert alert-danger" *ngIf="result.error">{{ result.error }}</pre>
+<pre class="mt-2 alert alert-success" *ngIf="result.count">{{ result.count }} 件のレコードを処理しました</pre>

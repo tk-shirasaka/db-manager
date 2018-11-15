@@ -1,0 +1,28 @@
+<form (ngSubmit)="saveConnection()">
+  <div>
+    <mat-form-field>
+      <input matInput [(ngModel)]="connection.description" name="description" placeholder="説明">
+    </mat-form-field>
+  </div>
+  <div>
+    <mat-form-field>
+      <mat-select [(ngModel)]="connection.permissions" name="permissions" placeholder="権限" multiple>
+        <mat-option [value]="permission" *ngFor="let permission of permissions">{{ permission | uppercase }}</mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+  <mat-form-field>
+    <mat-select [(ngModel)]="connection.driver" name="driver" placeholder="種類">
+      <mat-option [value]="type.key" *ngFor="let type of formTypes | keyvalue">{{ type.key }}</mat-option>
+    </mat-select>
+  </mat-form-field>
+  <div *ngIf="connection.driver">
+    <div *ngFor="let field of formTypes[connection.driver].fields">
+      <input [(ngModel)]="connection[field.name]" type="hidden" [name]="field.name" *ngIf="field.type === 'hidden'">
+      <mat-form-field *ngIf="field.type !== 'hidden'">
+        <input matInput [(ngModel)]="connection[field.name]" [type]="field.type" [name]="field.name" [placeholder]="field.label">
+      </mat-form-field>
+    </div>
+  </div>
+  <button type="submit" class="mt-2 btn btn-primary">保存</button>
+</form>
