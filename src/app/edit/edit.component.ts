@@ -25,9 +25,10 @@ export class EditComponent implements OnInit {
       .subscribe(formTypes => this.formTypes = formTypes);
   }
 
-  saveConnection(): void {
+  saveConnection(save: boolean): void {
     this.connectionService.getConnections().subscribe(connections => {
-      connections[this.index] = this.connection;
+      connections = connections.slice(0);
+      save ? connections.splice(this.index, 1, this.connection) : connections.splice(this.index, 1);
       this.connectionService.saveConnection(connections).subscribe(_ => location.reload());
     });
   }

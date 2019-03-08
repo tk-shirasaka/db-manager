@@ -4,12 +4,11 @@
       <mat-icon class="align-bottom text-primary">settings</mat-icon> DB Manager
     </h5>
     <div class="m-0" *ngFor="let connection of connections; index as i">
-      <span (click)="getTables(i, false)">
+      <button class="btn text-light m-0 p-0" (click)="getTables(i, false)">
         <mat-icon class="align-bottom" [class.text-info]="i !== select.connection" [class.text-warning]="i === select.connection">folder</mat-icon> {{ connection.description }}
-      </span>
+      </button>
       <div class="float-right" *ngIf="i === select.connection">
         <mat-icon class="align-bottom" [color]="select.edit ? 'accent' : 'default'" (click)="select.edit = !select.edit">edit</mat-icon>
-        <mat-icon class="align-bottom text-danger" (click)="saveDatabase(connections.splice(i, 1))">delete</mat-icon>
         <mat-icon class="align-bottom text-success" (click)="resetTable(i)">refresh</mat-icon>
       </div>
       <div class="ml-4" *ngIf="i === select.connection">
@@ -21,17 +20,19 @@
           <input matInput [(ngModel)]="filter.table" name="table" (keyup)="getTables(i, true)">
         </mat-form-field>
         <div *ngFor="let table of tables">
-          <span (click)="getColumns(table)">
+          <button class="btn text-light m-0 p-0" (click)="getColumns(table)">
             <mat-icon class="align-bottom" [class.text-info]="table !== select.table" [class.text-warning]="table === select.table">list</mat-icon> {{ table }}
-          </span>
+          </button>
           <mat-icon class="float-right align-bottom" (click)="toggleColumns()" *ngIf="table === select.table">autorenew</mat-icon>
           <div class="ml-4" *ngIf="table === select.table">
             <mat-form-field>
               <mat-icon matPrefix class="align-bottom text-light mr-1">search</mat-icon>
               <input matInput [(ngModel)]="filter.column" name="column" (keyup)="getColumns(table, true)">
             </mat-form-field>
-            <div [class.text-warning]="select.columns.indexOf(column.name) >= 0" (click)="toggleColumn(column.name)" *ngFor="let column of columns">
-              {{ column.name }} : {{ column.type }}{{ column.length ? '('+column.length+')' : '' }} {{ column.notnull ? '' : 'NULL'}}
+            <div (click)="toggleColumn(column.name)" *ngFor="let column of columns">
+              <button class="btn m-0 p-0" [class.text-light]="select.columns.indexOf(column.name) < 0" [class.text-warning]="select.columns.indexOf(column.name) >= 0" >
+                {{ column.name }} : {{ column.type }}{{ column.length ? '('+column.length+')' : '' }} {{ column.notnull ? '' : 'NULL'}}
+              </button>
             </div>
           </div>
         </div>
