@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, OnChanges, Input } from '@angular/core';
 
 import { Permissions } from '../permissions';
 import { Connection } from '../connection';
@@ -12,28 +12,32 @@ import 'brace/mode/sql';
   templateUrl: './query.component.html',
   styleUrls: ['./query.component.css']
 })
-export class QueryComponent {
+export class QueryComponent implements OnChanges {
 
   @Input() index: number;
   @Input() connection: Connection;
   @Input() table: string;
-  @Input() columns: string[];
+  @Input() columns: string;
 
   permissions = Permissions;
-  queryType = '';
+  queryType = 'select';
   history = 0;
   result: Result = new Result;
 
   constructor(private queryService: QueryService) { }
 
+  ngOnChanges() {
+    this.setTemplate();
+  }
+
   setTemplate(): void {
     if (this.table) {
-      const columns = this.columns.join(',\n    ');
+      const where = !('query' in this.result) || this.result.query.search(/where/i) < 0 ? 'where' : this.result.query.replace(/^(.|\n)*?where/i, 'where');
       switch (this.queryType) {
-        case 'select': this.result.query = `select\n    ${columns}\nfrom ${this.table}\nwhere`; break;
-        case 'update': this.result.query = `update ${this.table}\nset\n    ${columns}\nwhere`; break;
-        case 'insert': this.result.query = `insert into ${this.table}\n(\n    ${columns}\n)\nvalues\n()`; break;
-        case 'delete': this.result.query = `delete from ${this.table}\nwhere`; break;
+        case 'select': this.result.query = `select\n    ${this.columns}\nfrom ${this.table}\n${where}`; break;
+        case 'update': this.result.query = `update ${this.table}\nset\n    ${this.columns}\n${where}`; break;
+        case 'insert': this.result.query = `insert into ${this.table}\n(\n    ${this.columns}\n)\nvalues\n()`; break;
+        case 'delete': this.result.query = `delete from ${this.table}\n${where}`; break;
       }
     }
   }

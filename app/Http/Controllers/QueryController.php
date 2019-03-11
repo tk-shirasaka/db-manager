@@ -35,7 +35,7 @@ class QueryController extends Controller
                 } else {
                   $result['count'] = (int) $data;
                 }
-                Cache::put("history.{$connection}", $history, 60);
+                Cache::put("history.{$connection}", $history, 3600);
             } catch (Exception $e) {
                 $result['error'] = $e->getMessage();
             }

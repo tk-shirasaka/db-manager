@@ -42,7 +42,7 @@
   </mat-drawer>
 
   <mat-drawer-content class="p-4">
-    <app-query [index]="select.connection" [connection]="connections[select.connection]" [table]="select.table" [columns]="select.columns" *ngIf="tables.length && !select.edit"></app-query>
+    <app-query [index]="select.connection" [connection]="connections[select.connection]" [table]="select.table" [columns]="select.columns.join(',\n    ')" *ngIf="tables.length && !select.edit"></app-query>
     <app-edit [index]="select.connection" [connection]="connections[select.connection]" *ngIf="select.edit"></app-edit>
   </mat-drawer-content>
 </mat-drawer-container>
