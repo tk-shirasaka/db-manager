@@ -3,10 +3,6 @@ ace-editor {
     width: 100%;
 }
 
-mat-icon {
-    cursor: pointer;
-}
-
 table.table {
     white-space: nowrap;
 }

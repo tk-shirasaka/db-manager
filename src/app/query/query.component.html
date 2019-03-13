@@ -22,7 +22,7 @@
       </tbody>
     </table>
     {{ result.count }} 件中 {{ result.data.length }} 件のレコードを表示
-    <mat-icon class="float-right text-warning" (click)="copy(tabledata)">file_copy</mat-icon>
+    <i class="fas fa-copy float-right text-warning" (click)="copy(tabledata)"></i>
   </mat-tab>
 </mat-tab-group>
 
@@ -36,7 +36,7 @@
     <mat-option [value]="history" *ngFor="let history of result.history">{{ history }}</mat-option>
   </mat-select>
 </mat-form-field>
-<button class="m-3" mat-icon-button color="primary" (click)="execute()"><mat-icon>play_arrow</mat-icon></button>
+<i class="fas fa-play text-primary m-3" (click)="execute()"></i>
 
 <pre class="mt-2 alert alert-danger" *ngIf="result.error">{{ result.error }}</pre>
 <pre class="mt-2 alert alert-success" *ngIf="result.count">{{ result.count }} 件のレコードを処理しました</pre>

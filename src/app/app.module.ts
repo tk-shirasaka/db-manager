@@ -7,7 +7,6 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatButtonModule } from '@angular/material/button';
-import { MatIconModule } from '@angular/material/icon';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
@@ -37,7 +36,6 @@ import { QueryComponent } from './query/query.component';
     MatSidenavModule,
     MatTabsModule,
     MatButtonModule,
-    MatIconModule,
     MatSnackBarModule,
     MatFormFieldModule,
     MatInputModule,
