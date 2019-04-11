@@ -44,7 +44,5 @@ Homestead.yaml
 .env
 
 /public/*
-!public/index.php
-!public/.htaccess
 
 /storage
