@@ -71,9 +71,9 @@ export class AppComponent implements OnInit {
   toggleColumn(column: string) {
     const index = this.select.columns.indexOf(column);
     if (index < 0) {
-      this.select.columns.push(column);
+      this.select.columns = [... this.select.columns, column];
     } else {
-      this.select.columns.splice(index, 1);
+      this.select.columns = this.select.columns.filter(col => col !== column);
     }
   }
 

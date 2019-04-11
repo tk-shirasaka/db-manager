@@ -17,7 +17,7 @@ export class QueryComponent implements OnChanges {
   @Input() index: number;
   @Input() connection: Connection;
   @Input() table: string;
-  @Input() columns: string;
+  @Input() columns: string[];
 
   permissions = Permissions;
   queryType = 'select';
@@ -33,11 +33,14 @@ export class QueryComponent implements OnChanges {
   setTemplate(): void {
     if (this.table) {
       const where = !('query' in this.result) || this.result.query.search(/where/i) < 0 ? 'where' : this.result.query.replace(/^(.|\n)*?where/i, 'where');
+      const quote = this.connection.driver === 'sqlsrv' ? ['[', ']'] : ['`', '`'];
+      const table = `${quote[0]}${this.table}${quote[1]}`;
+      const columns = this.columns.map(col => `${quote[0]}${col}${quote[1]}`).join(', \n    ');
       switch (this.queryType) {
-        case 'select': this.result.query = `select\n    ${this.columns}\nfrom ${this.table}\n${where}`; break;
-        case 'update': this.result.query = `update ${this.table}\nset\n    ${this.columns}\n${where}`; break;
-        case 'insert': this.result.query = `insert into ${this.table}\n(\n    ${this.columns}\n)\nvalues\n()`; break;
-        case 'delete': this.result.query = `delete from ${this.table}\n${where}`; break;
+        case 'select': this.result.query = `select\n    ${columns}\nfrom ${table}\n${where}`; break;
+        case 'update': this.result.query = `update ${table}\nset\n    ${columns}\n${where}`; break;
+        case 'insert': this.result.query = `insert into ${table}\n(\n    ${columns}\n)\nvalues\n()`; break;
+        case 'delete': this.result.query = `delete from ${table}\n${where}`; break;
       }
     }
   }
