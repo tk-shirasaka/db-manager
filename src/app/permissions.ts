@@ -3,4 +3,5 @@ export const Permissions: string[] = [
   'update',
   'insert',
   'delete',
+  'alter',
 ];

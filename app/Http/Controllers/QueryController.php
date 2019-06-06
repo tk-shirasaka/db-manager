@@ -27,6 +27,8 @@ class QueryController extends Controller
                 if (!in_array($type, config("database.connections.{$connection}.permissions"))) {
                     throw new Exception('許可されていない操作です');
                 }
+                $type = $type === 'alter' ? 'statement' : $type;
+
                 $data = $db->{$type}($query);
                 if ($type === 'select') {
                   $result['count'] = count($data);

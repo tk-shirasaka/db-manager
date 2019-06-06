@@ -49,6 +49,7 @@ export class QueryComponent implements OnChanges {
         case 'update': this.result.query = `update ${table}\nset\n    ${columns}\n${where}`; break;
         case 'insert': this.result.query = `insert into ${table}\n(\n    ${columns}\n)\nvalues\n()`; break;
         case 'delete': this.result.query = `delete from ${table}\n${where}`; break;
+        case 'alter' : this.result.query = `alter table ${table}\n${ columns ? 'alter column \n    '+columns : 'add\n' }`; break;
       }
     }
   }
