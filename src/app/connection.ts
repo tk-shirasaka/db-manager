@@ -15,9 +15,10 @@ interface Field {
 export class FormType {
   name: string;
   fields: Field[];
+  quote: string[];
 }
 
 export interface Connections {
   connections: Connection[];
-  types: FormType[];
+  types: {[k: string]: FormType};
 }

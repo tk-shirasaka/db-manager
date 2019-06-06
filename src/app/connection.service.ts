@@ -14,7 +14,7 @@ export class ConnectionService extends ApiService {
     return this.http.get<Connections>(`/api/connections`).pipe(map(result => result.connections));
   }
 
-  getTypes(): Observable<FormType[]> {
+  getTypes(): Observable<{[k: string]: FormType}> {
     return this.http.get<Connections>(`/api/connections`).pipe(map(result => result.types));
   }
 

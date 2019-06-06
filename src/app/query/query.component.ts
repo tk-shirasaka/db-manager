@@ -1,9 +1,10 @@
 import { Component, OnChanges, Input } from '@angular/core';
 
+import { ConnectionService } from '../connection.service';
+import { QueryService } from '../query.service';
 import { Permissions } from '../permissions';
 import { Connection } from '../connection';
 import { Result } from '../query';
-import { QueryService } from '../query.service';
 
 import 'brace/mode/sql';
 
@@ -23,19 +24,26 @@ export class QueryComponent implements OnChanges {
   queryType = 'select';
   history = 0;
   result: Result = new Result;
+  quote: string[] = [];
 
-  constructor(private queryService: QueryService) { }
+  constructor(
+    private connectionService: ConnectionService,
+    private queryService: QueryService
+  ) { }
 
   ngOnChanges() {
-    this.setTemplate();
+    this.connectionService.getTypes()
+      .subscribe(formTypes => {
+        this.quote = formTypes[this.connection.driver].quote;
+        this.setTemplate();
+      });
   }
 
   setTemplate(): void {
     if (this.table) {
       const where = !('query' in this.result) || this.result.query.search(/where/i) < 0 ? 'where' : this.result.query.replace(/^(.|\n)*?where/i, 'where');
-      const quote = this.connection.driver === 'sqlsrv' ? ['[', ']'] : ['`', '`'];
-      const table = `${quote[0]}${this.table}${quote[1]}`;
-      const columns = this.columns.map(col => `${quote[0]}${col}${quote[1]}`).join(', \n    ');
+      const table = `${this.quote[0]}${this.table}${this.quote[1]}`;
+      const columns = this.columns.map(col => `${this.quote[0]}${col}${this.quote[1]}`).join(',\n    ');
       switch (this.queryType) {
         case 'select': this.result.query = `select\n    ${columns}\nfrom ${table}\n${where}`; break;
         case 'update': this.result.query = `update ${table}\nset\n    ${columns}\n${where}`; break;

@@ -15,7 +15,7 @@ export class EditComponent implements OnInit {
   @Input() connection: Connection;
 
   permissions = Permissions;
-  formTypes: FormType[] = [];
+  formTypes: {[k: string]: FormType} = {};
 
   constructor(private connectionService: ConnectionService) { }
 

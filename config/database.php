@@ -88,6 +88,7 @@ return [
         ],
         'mysql' => [
             'name' => 'mysql',
+            'quote' => ['`', '`'],
             'fields' => [
                 ['name' => 'host', 'type' => 'text', 'label' => '接続先'],
                 ['name' => 'port', 'type' => 'text', 'label' => 'ポート番号', 'value' => 3306],
@@ -104,6 +105,7 @@ return [
         ],
         'pgsql' => [
             'name' => 'pgsql',
+            'quote' => ['"', '"'],
             'fields' => [
                 ['name' => 'host', 'type' => 'text', 'label' => '接続先'],
                 ['name' => 'port', 'type' => 'text', 'label' => 'ポート番号', 'value' => 5432],
@@ -118,6 +120,7 @@ return [
         ],
         'sqlsrv' => [
             'name' => 'sqlsrv',
+            'quote' => ['[', ']'],
             'fields' => [
                 ['name' => 'host', 'type' => 'text', 'label' => '接続先'],
                 ['name' => 'port', 'type' => 'text', 'label' => 'ポート番号', 'value' => 1433],
