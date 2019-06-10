@@ -11,7 +11,7 @@ import 'brace/mode/sql';
 @Component({
   selector: 'app-query',
   templateUrl: './query.component.html',
-  styleUrls: ['./query.component.css']
+  styleUrls: ['./query.component.scss']
 })
 export class QueryComponent implements OnChanges {
 

@@ -14,6 +14,8 @@ import { MatSelectModule } from '@angular/material/select';
 
 import { AceEditorModule } from 'ng2-ace-editor';
 
+import { AppRoutingModule } from './app-routing.module';
+
 import { httpInterCeptorProviders } from './http-interceptors';
 
 import { AppComponent } from './app.component';
@@ -42,6 +44,8 @@ import { QueryComponent } from './query/query.component';
     MatSelectModule,
 
     AceEditorModule,
+
+    AppRoutingModule,
   ],
   providers: [httpInterCeptorProviders],
   bootstrap: [AppComponent]

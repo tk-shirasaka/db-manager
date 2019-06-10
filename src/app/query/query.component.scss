@@ -3,15 +3,17 @@ ace-editor {
     width: 100%;
 }
 
-table.table {
+table {
+  &.table {
     white-space: nowrap;
-}
+  }
 
-table.table-dark {
+  &.table-dark {
     width: 10px;
-}
+  }
 
-table.table-responsive {
+  &.table-responsive {
     width: calc(100% - 30px);
     max-width: 95%;
+  }
 }
