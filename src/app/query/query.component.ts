@@ -4,6 +4,7 @@ import { ConnectionService } from '../connection.service';
 import { QueryService } from '../query.service';
 import { Permissions } from '../permissions';
 import { Connection } from '../connection';
+import { Column } from '../table';
 import { Result } from '../query';
 
 import 'brace/mode/sql';
@@ -18,7 +19,7 @@ export class QueryComponent implements OnChanges {
   @Input() index: number;
   @Input() connection: Connection;
   @Input() table: string;
-  @Input() columns: string[];
+  @Input() columns: Column[];
 
   permissions = Permissions;
   queryType = 'select';
@@ -43,7 +44,7 @@ export class QueryComponent implements OnChanges {
     if (this.table) {
       const where = !('query' in this.result) || this.result.query.search(/where/i) < 0 ? 'where' : this.result.query.replace(/^(.|\n)*?where/i, 'where');
       const table = `${this.quote[0]}${this.table}${this.quote[1]}`;
-      const columns = this.columns.map(col => `${this.quote[0]}${col}${this.quote[1]}`).join(',\n    ');
+      const columns = this.columns.map(col => `${this.quote[0]}${col.name}${this.quote[1]}`).join(',\n    ');
       switch (this.queryType) {
         case 'select': this.result.query = `select\n    ${columns}\nfrom ${table}\n${where}`; break;
         case 'update': this.result.query = `update ${table}\nset\n    ${columns}\n${where}`; break;

@@ -1,0 +1,9 @@
+<app-layout [index]="connections.length" [connection]="connection" [edit]="edit">
+  <div class="m-0" *ngFor="let connection of connections; index as i">
+    <button class="btn text-light m-0 p-0" [routerLink]="i">
+      <i class="fas fa-folder text-info"></i>
+      {{ connection.description }}
+    </button>
+  </div>
+  <i class="fas fa-plus text-success" (click)="addConnection()"></i>
+</app-layout>

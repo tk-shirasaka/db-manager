@@ -26,10 +26,6 @@ export class EditComponent implements OnInit {
   }
 
   saveConnection(save: boolean): void {
-    this.connectionService.getConnections().subscribe(connections => {
-      connections = connections.slice(0);
-      save ? connections.splice(this.index, 1, this.connection) : connections.splice(this.index, 1);
-      this.connectionService.saveConnection(connections).subscribe(_ => location.reload());
-    });
+    this.connectionService.saveConnection(this.index, save ? this.connection : null);
   }
 }

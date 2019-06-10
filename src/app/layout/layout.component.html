@@ -1,0 +1,11 @@
+<mat-drawer-container class="h-100" autosize>
+  <mat-drawer class="p-2 bg-dark text-light" mode="side" opened>
+    <h5 class="m-4">DB Manager</h5>
+    <ng-content></ng-content>
+  </mat-drawer>
+
+  <mat-drawer-content class="p-4">
+    <app-query [index]="index" [connection]="connection" [table]="table" [columns]="columns" *ngIf="connection && !edit"></app-query>
+    <app-edit [index]="index" [connection]="connection" *ngIf="connection && edit"></app-edit>
+  </mat-drawer-content>
+</mat-drawer-container>

@@ -21,12 +21,20 @@ import { httpInterCeptorProviders } from './http-interceptors';
 import { AppComponent } from './app.component';
 import { EditComponent } from './edit/edit.component';
 import { QueryComponent } from './query/query.component';
+import { ConnectionsComponent } from './connections/connections.component';
+import { TablesComponent } from './tables/tables.component';
+import { ColumnsComponent } from './columns/columns.component';
+import { LayoutComponent } from './layout/layout.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     EditComponent,
     QueryComponent,
+    ConnectionsComponent,
+    TablesComponent,
+    ColumnsComponent,
+    LayoutComponent,
   ],
   imports: [
     FormsModule,

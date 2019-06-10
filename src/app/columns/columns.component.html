@@ -1,0 +1,31 @@
+<app-layout [connection]="connection" [table]="table" [columns]="selected">
+  <div class="m-0" *ngIf="connection">
+    <button class="btn text-light m-0 p-0" routerLink="/">
+      <i class="fas fa-folder-open text-warning"></i>
+      {{ connection.description }}
+    </button>
+    <div class="ml-4">
+      <p>{{ connection.database }}</p>
+      <div>
+        <button class="btn text-light m-0 p-0" routerLink="..">
+          <i class="fas fa-list text-warning"></i> {{ table }}
+        </button>
+        <div class="float-right">
+          <i class="fas fa-sync" (click)="toggleColumns()"></i>
+          <i class="fas fa-download" (click)="resetColumns()"></i>
+        </div>
+        <div class="ml-4">
+          <mat-form-field>
+            <i class="fas fa-search position-absolute h-100 w-100" (click)="filter = ''"></i>
+            <input matInput [(ngModel)]="filter" name="filter" class="pl-4">
+          </mat-form-field>
+          <div (click)="toggleColumn(column)" *ngFor="let column of columns">
+            <button class="btn m-0 p-0" [class.text-light]="!checkColumn(column)" [class.text-warning]="checkColumn(column)" *ngIf="column.name.search(filter) >= 0">
+              {{ column.name }} : {{ column.type }}{{ column.length ? '('+column.length+')' : '' }} {{ column.notnull ? '' : 'NULL'}}
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</app-layout>

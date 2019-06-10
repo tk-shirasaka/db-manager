@@ -1,0 +1,26 @@
+<app-layout [connection]="connection" [edit]="edit">
+  <div class="m-0" *ngIf="connection">
+    <button class="btn text-light m-0 p-0" routerLink="/">
+      <i class="fas fa-folder-open text-warning"></i>
+      {{ connection.description }}
+    </button>
+    <div class="float-right">
+      <i class="fas fa-edit" [class.text-warning]="edit" (click)="edit = !edit"></i>
+      <i class="fas fa-download" (click)="resetTables()"></i>
+    </div>
+    <div class="ml-4">
+      <mat-form-field>
+        <input matInput [(ngModel)]="connection.database" name="database" required (change)="saveConnection()">
+      </mat-form-field>
+      <mat-form-field>
+        <i class="fas fa-search position-absolute h-100 w-100" (click)="filter = ''"></i>
+        <input matInput [(ngModel)]="filter" name="filter" class="pl-4">
+      </mat-form-field>
+      <div *ngFor="let table of tables">
+        <button class="btn text-light m-0 p-0" [routerLink]="table" *ngIf="table.search(filter) >= 0">
+          <i class="fas fa-list text-info"></i> {{ table }}
+        </button>
+      </div>
+    </div>
+  </div>
+</app-layout>
