@@ -1,19 +1,27 @@
 ace-editor {
-    min-height: 600px;
-    width: 100%;
+  min-height: 600px;
 }
 
 table {
   &.table {
+    max-height: 40em;
     white-space: nowrap;
-  }
+    font-size: .8em;
 
-  &.table-dark {
-    width: 10px;
-  }
+    thead th {
+      z-index: 1;
+    }
 
-  &.table-responsive {
-    width: calc(100% - 30px);
-    max-width: 95%;
+    th {
+      position: sticky;
+      top: 0;
+      left: 0;
+    }
+
+    th, td {
+      line-height: 1;
+      padding: .5em;
+      white-space: pre;
+    }
   }
 }

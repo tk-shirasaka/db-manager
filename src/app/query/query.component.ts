@@ -26,6 +26,7 @@ export class QueryComponent implements OnChanges {
   history = 0;
   result: Result = new Result;
   quote: string[] = [];
+  filter: string = '';
 
   constructor(
     private connectionService: ConnectionService,
@@ -38,6 +39,10 @@ export class QueryComponent implements OnChanges {
         this.quote = formTypes[this.connection.driver].quote;
         this.setTemplate();
       });
+  }
+
+  headers() {
+    return this.filter ? this.result.header.filter(header => header.search(this.filter) >= 0) : this.result.header;
   }
 
   setTemplate(): void {
@@ -56,13 +61,13 @@ export class QueryComponent implements OnChanges {
   }
 
   copy(element: HTMLTableElement): void {
-    const range = document.createRange();
-    const select = window.getSelection();
-    select.removeAllRanges();
-    range.selectNodeContents(element);
-    select.addRange(range);
-    document.execCommand('copy');
-    select.removeAllRanges();
+    const headers = this.headers();
+    const text = this.result.data.map(data => {
+      const line: string[] = [];
+      headers.forEach(header => line.push(data[header]));
+      return line.join('\t');
+    }).join('\n');
+    navigator.clipboard.writeText(text);
   }
 
   execute(): void {

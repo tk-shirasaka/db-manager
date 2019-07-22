@@ -1,28 +1,28 @@
 <mat-tab-group>
   <mat-tab label="クエリ">
-    <ace-editor [(text)]="result.query" mode="sql" (keydown.control.enter)="execute()"></ace-editor>
+    <ace-editor mode="sql" [(text)]="result.query" (keydown.control.enter)="execute()"></ace-editor>
   </mat-tab>
   <mat-tab label="実行結果" *ngIf="result.data && result.data.length">
-    <table class="table table-sm table-dark float-left">
-      <thead>
-        <tr><th>#</th></tr>
-        <tr *ngFor="let row of result.data; index as i"><td>{{ i + 1 }}</td></tr>
-      </thead>
-    </table>
+    <mat-form-field>
+      <i class="fas fa-search position-absolute h-100 w-100" (click)="filter = ''"></i>
+      <input matInput [(ngModel)]="filter" name="filter" class="pl-4">
+    </mat-form-field>
     <table class="table table-sm table-striped table-responsive">
       <thead class="thead-dark">
         <tr>
-          <th *ngFor="let header of result.header">{{ header }}</th>
+          <th>#</th>
+          <th *ngFor="let header of headers()">{{ header }}</th>
         </tr>
       </thead>
-      <tbody #tabledata>
+      <tbody>
         <tr *ngFor="let row of result.data; index as i">
-          <td *ngFor="let header of result.header">{{ row[header] === null ? 'NULL' : row[header] }}</td>
+          <th class="bg-dark text-light" >{{ i + 1 }}</th>
+          <td *ngFor="let header of headers()">{{ row[header] === null ? 'NULL' : row[header] }}</td>
         </tr>
       </tbody>
     </table>
     {{ result.count }} 件中 {{ result.data.length }} 件のレコードを表示
-    <i class="fas fa-copy float-right text-warning" (click)="copy(tabledata)"></i>
+    <i class="fas fa-copy float-right text-warning" (click)="copy()"></i>
   </mat-tab>
 </mat-tab-group>
 
