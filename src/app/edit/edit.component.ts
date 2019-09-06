@@ -1,7 +1,8 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 
 import { Permissions } from '../permissions';
 import { Connection, FormType } from '../connection';
+import { ParamsService } from '../params.service';
 import { ConnectionService } from '../connection.service';
 
 @Component({
@@ -11,21 +12,24 @@ import { ConnectionService } from '../connection.service';
 })
 export class EditComponent implements OnInit {
 
-  @Input() index: number;
-  @Input() connection: Connection;
+  connection: Connection;
 
   permissions = Permissions;
   formTypes: {[k: string]: FormType} = {};
 
-  constructor(private connectionService: ConnectionService) { }
+  constructor(
+    private paramsService: ParamsService,
+    private connectionService: ConnectionService
+  ) { }
 
   ngOnInit() {
-    this.connection = Object.assign({}, this.connection);
+    this.paramsService.getParams()
+      .subscribe(params => this.connection = Object.assign({}, params.connection));
     this.connectionService.getTypes()
       .subscribe(formTypes => this.formTypes = formTypes);
   }
 
   saveConnection(save: boolean): void {
-    this.connectionService.saveConnection(this.index, save ? this.connection : null);
+    this.connectionService.saveConnection(save ? this.connection : null);
   }
 }

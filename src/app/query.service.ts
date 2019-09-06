@@ -9,7 +9,13 @@ import { Result } from './query';
 })
 export class QueryService extends ApiService {
 
-  execute(index: number, query: string): Observable<Result> {
-    return this.http.post<Result>(`/api/query/${index}`, { query });
+  private connection: number = null;
+
+  setConnection(connection: number) {
+    this.connection = connection;
+  }
+
+  execute(query: string): Observable<Result> {
+    return this.http.post<Result>(`/api/query/${this.connection}`, { query });
   }
 }

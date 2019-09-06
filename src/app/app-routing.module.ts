@@ -6,9 +6,11 @@ import { TablesComponent } from './tables/tables.component';
 import { ColumnsComponent } from './columns/columns.component';
 
 const routes: Routes = [
-  { path: '', component: ConnectionsComponent },
-  { path: ':connection', component: TablesComponent },
-  { path: ':connection/:table', component: ColumnsComponent },
+  { path: '', component: ConnectionsComponent, children: [
+    { path: ':connection', component: TablesComponent, children: [
+      { path: ':table', component: ColumnsComponent },
+    ]},
+  ]},
 ];
 
 @NgModule({

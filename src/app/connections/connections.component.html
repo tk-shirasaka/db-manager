@@ -1,9 +1,30 @@
-<app-layout [index]="connections.length" [connection]="connection" [edit]="edit">
-  <div class="m-0" *ngFor="let connection of connections; index as i">
-    <button class="btn text-light m-0 p-0" [routerLink]="i">
-      <i class="fas fa-folder text-info"></i>
-      {{ connection.description }}
-    </button>
-  </div>
-  <i class="fas fa-plus text-success" (click)="addConnection()"></i>
-</app-layout>
+<mat-drawer-container class="h-100" autosize>
+  <mat-drawer class="p-2 bg-dark text-light" mode="side" opened>
+    <h5 class="m-4">DB Manager</h5>
+    <div class="m-0" *ngFor="let connection of connections; index as i">
+      <div *ngIf="connection !== selected">
+        <button class="btn text-light m-0 p-0" [routerLink]="['/', i]" (click)="setConnection(i)">
+          <i class="fas fa-folder text-info"></i>
+          {{ connection.description }}
+        </button>
+      </div>
+      <div *ngIf="connection === selected">
+        <button class="btn text-light m-0 p-0" routerLink="/" (click)="initParams()">
+          <i class="fas fa-folder-open text-warning"></i>
+          {{ connection.description }}
+        </button>
+        <div class="float-right">
+          <i class="fas fa-edit" [class.text-warning]="edit" (click)="edit = !edit"></i>
+          <i class="fas fa-download" (click)="setConnection(i, true)"></i>
+        </div>
+        <router-outlet></router-outlet>
+      </div>
+    </div>
+    <i class="fas fa-plus text-success" (click)="addConnection()"></i>
+  </mat-drawer>
+
+  <mat-drawer-content class="p-4">
+    <app-query *ngIf="!edit"></app-query>
+    <app-edit *ngIf="edit"></app-edit>
+  </mat-drawer-content>
+</mat-drawer-container>

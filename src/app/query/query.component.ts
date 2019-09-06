@@ -1,5 +1,6 @@
-import { Component, OnChanges, Input } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 
+import { ParamsService } from '../params.service';
 import { ConnectionService } from '../connection.service';
 import { QueryService } from '../query.service';
 import { Permissions } from '../permissions';
@@ -14,53 +15,49 @@ import 'brace/mode/sql';
   templateUrl: './query.component.html',
   styleUrls: ['./query.component.scss']
 })
-export class QueryComponent implements OnChanges {
-
-  @Input() index: number;
-  @Input() connection: Connection;
-  @Input() table: string;
-  @Input() columns: Column[];
+export class QueryComponent implements OnInit {
 
   permissions = Permissions;
   queryType = 'select';
+  table: string;
   history = 0;
   result: Result = new Result;
-  quote: string[] = [];
   filter: string = '';
 
   constructor(
+    private paramsService: ParamsService,
     private connectionService: ConnectionService,
     private queryService: QueryService
   ) { }
 
-  ngOnChanges() {
-    this.connectionService.getTypes()
-      .subscribe(formTypes => {
-        this.quote = formTypes[this.connection.driver].quote;
-        this.setTemplate();
-      });
+  ngOnInit() {
+    this.paramsService.getParams().subscribe(params => this.setTemplate(params));
   }
 
   headers() {
     return this.filter ? this.result.header.filter(header => header.search(this.filter) >= 0) : this.result.header;
   }
 
-  setTemplate(): void {
-    if (this.table) {
-      const where = !('query' in this.result) || this.result.query.search(/where/i) < 0 ? 'where' : this.result.query.replace(/^(.|\n)*?where/i, 'where');
-      const table = `${this.quote[0]}${this.table}${this.quote[1]}`;
-      const columns = this.columns.map(col => `${this.quote[0]}${col.name}${this.quote[1]}`).join(',\n    ');
-      switch (this.queryType) {
-        case 'select': this.result.query = `select\n    ${columns}\nfrom ${table}\n${where}`; break;
-        case 'update': this.result.query = `update ${table}\nset\n    ${columns}\n${where}`; break;
-        case 'insert': this.result.query = `insert into ${table}\n(\n    ${columns}\n)\nvalues\n()`; break;
-        case 'delete': this.result.query = `delete from ${table}\n${where}`; break;
-        case 'alter' : this.result.query = `alter table ${table}\n${ columns ? 'alter column \n    '+columns : 'add\n' }`; break;
-      }
+  setTemplate(params: {connection: Connection, table: string, selected: Column[]}): void {
+    this.table = params.table;
+    if (params.table) {
+      this.connectionService.getTypes().subscribe(formTypes => {
+        const quote = formTypes[params.connection.driver].quote;
+        const where = !('query' in this.result) || this.result.query.search(/where/i) < 0 ? 'where' : this.result.query.replace(/^(.|\n)*?where/i, 'where');
+        const selected = params.selected.map(col => `${quote[0]}${col.name}${quote[1]}`).join(',\n    ');
+        const table = `${quote[0]}${params.table}${quote[1]}`;
+        switch (this.queryType) {
+          case 'select': this.result.query = `select\n    ${selected}\nfrom ${table}\n${where}`; break;
+          case 'update': this.result.query = `update ${table}\nset\n    ${selected}\n${where}`; break;
+          case 'insert': this.result.query = `insert into ${table}\n(\n    ${selected}\n)\nvalues\n()`; break;
+          case 'delete': this.result.query = `delete from ${table}\n${where}`; break;
+          case 'alter' : this.result.query = `alter table ${table}\n${ selected ? 'alter column \n    '+selected : 'add\n' }`; break;
+        }
+      });
     }
   }
 
-  copy(element: HTMLTableElement): void {
+  copy(): void {
     const headers = this.headers();
     const text = this.result.data.map(data => {
       const line: string[] = [];
@@ -71,7 +68,7 @@ export class QueryComponent implements OnChanges {
   }
 
   execute(): void {
-    this.queryService.execute(this.index, this.result.query)
+    this.queryService.execute(this.result.query)
     .subscribe(result => {
       this.result = result;
       this.history = result.history.length;

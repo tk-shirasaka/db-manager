@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Observable, of } from 'rxjs';
+import { Observable } from 'rxjs';
 
 import { ApiService } from './api.service';
 import { Column } from './table';
@@ -11,40 +11,17 @@ export class TableService extends ApiService {
 
   private connection: number = null;
   private table: string = null;
-  private columns: Column[] = [];
 
-  setConnection(connection: number) {
+  setConnection(connection: number, params: {[k: string]: string}): Observable<string[]> {
+    this.table = null;
     this.connection = connection;
-    return this;
+
+    return this.http.get<string[]>(`/api/tables/${this.connection}`, params);
   }
 
-  getTables(params = {}): Observable<string[]> {
-    this.columns = [];
-
-    return this.connection === null ? of(null)
-      : this.setTable(null).http.get<string[]>(`/api/tables/${this.connection}`, { params });
-  }
-
-  setTable(table: string) {
+  setTable(table: string, params: {[k: string]: string}): Observable<Column[]> {
     this.table = table;
-    return this;
-  }
 
-  getColumns(params = {}): Observable<Column[]> {
-    return this.connection === null || this.table === null ? of(null)
-      : this.http.get<Column[]>(`/api/tables/${this.connection}/${this.table}`, { params });
-  }
-
-  toggleColumn(column: Column) {
-    if (this.checkColumn(column)) {
-      this.columns = this.columns.filter(item => item !== column);
-    } else {
-      this.columns = [...this.columns, column];
-    }
-    return this.columns;
-  }
-
-  checkColumn(column: Column) {
-    return this.columns.indexOf(column) >= 0;
+    return this.http.get<Column[]>(`/api/tables/${this.connection}/${this.table}`, params);
   }
 }

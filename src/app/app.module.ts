@@ -24,7 +24,6 @@ import { QueryComponent } from './query/query.component';
 import { ConnectionsComponent } from './connections/connections.component';
 import { TablesComponent } from './tables/tables.component';
 import { ColumnsComponent } from './columns/columns.component';
-import { LayoutComponent } from './layout/layout.component';
 
 @NgModule({
   declarations: [
@@ -34,7 +33,6 @@ import { LayoutComponent } from './layout/layout.component';
     ConnectionsComponent,
     TablesComponent,
     ColumnsComponent,
-    LayoutComponent,
   ],
   imports: [
     FormsModule,

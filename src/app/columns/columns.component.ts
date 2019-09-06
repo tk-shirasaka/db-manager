@@ -1,9 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 
-import { ConnectionService } from '../connection.service';
-import { Connection } from '../connection';
-import { TableService } from '../table.service';
+import { ParamsService } from '../params.service';
 import { Column } from '../table';
 
 @Component({
@@ -13,43 +11,30 @@ import { Column } from '../table';
 })
 export class ColumnsComponent implements OnInit {
 
-  connection: Connection;
-  table: string;
   columns: Column[] = [];
   selected: Column[] = [];
   filter: string;
 
   constructor(
     private route: ActivatedRoute,
-    private connectionService: ConnectionService,
-    private tableService: TableService
+    private paramsService: ParamsService
   ) { }
 
   ngOnInit() {
-    const connection = +this.route.snapshot.paramMap.get('connection');
     const table = this.route.snapshot.paramMap.get('table');
 
-    this.connectionService.setConnection(connection).getConnection()
-      .subscribe(connection => this.connection = connection);
-    this.tableService.setConnection(connection).setTable(table).getColumns()
-      .subscribe(columns => this.columns = columns);
-    this.table = table;
+    this.paramsService.setTable(table);
+    this.paramsService.getParams().subscribe(params => {
+      this.columns = params.columns;
+      this.selected = params.selected;
+    });
   }
 
   checkColumn(column: Column) {
-    return this.tableService.checkColumn(column);
+    return this.paramsService.checkColumn(column);
   }
 
   toggleColumn(column: Column) {
-    this.selected = this.tableService.toggleColumn(column);
-  }
-
-  toggleColumns() {
-    this.columns.map(column => column.name.search(this.filter) >= 0 && this.toggleColumn(column))
-  }
-
-  resetColumns() {
-    this.tableService.getColumns({ t: String((new Date).getTime()) })
-      .subscribe(columns => this.columns = columns);
+    this.paramsService.toggleColumn(column);
   }
 }
