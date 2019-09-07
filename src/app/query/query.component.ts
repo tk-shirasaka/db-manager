@@ -17,9 +17,10 @@ import 'brace/mode/sql';
 })
 export class QueryComponent implements OnInit {
 
+  connection: Connection;
+  table: string;
   permissions = Permissions;
   queryType = 'select';
-  table: string;
   history = 0;
   result: Result = new Result;
   filter: string = '';
@@ -39,6 +40,7 @@ export class QueryComponent implements OnInit {
   }
 
   setTemplate(params: {connection: Connection, table: string, selected: Column[]}): void {
+    this.connection = params.connection;
     this.table = params.table;
     if (params.table) {
       this.connectionService.getTypes().subscribe(formTypes => {

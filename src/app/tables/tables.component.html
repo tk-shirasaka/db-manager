@@ -13,7 +13,7 @@
       </button>
     </div>
     <div *ngIf="table === selected">
-      <button class="btn text-light m-0 p-0" routerLink="..">
+      <button class="btn text-light m-0 p-0" routerLink="." (click)="setTable(null)">
         <i class="fas fa-list text-warning"></i> {{ table }}
       </button>
       <div class="float-right">
