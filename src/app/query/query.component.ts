@@ -8,8 +8,6 @@ import { Connection } from '../connection';
 import { Column } from '../table';
 import { Result } from '../query';
 
-import 'brace/mode/sql';
-
 @Component({
   selector: 'app-query',
   templateUrl: './query.component.html',

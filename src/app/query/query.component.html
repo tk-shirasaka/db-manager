@@ -1,6 +1,6 @@
 <mat-tab-group>
   <mat-tab label="クエリ">
-    <ace-editor mode="sql" [(text)]="result.query" (keydown.control.enter)="execute()"></ace-editor>
+    <ngx-monaco-editor [options]="{theme: 'vs-dark', language: 'sql'}" [(ngModel)]="result.query" (keydown.control.enter)="execute()"></ngx-monaco-editor>
   </mat-tab>
   <mat-tab label="実行結果" *ngIf="result.data && result.data.length">
     <mat-form-field>

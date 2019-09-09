@@ -26,14 +26,13 @@
               "src/index.php",
               "src/favicon.ico",
               "src/assets",
-              "src/.htaccess"
+              "src/.htaccess",
+              { "glob": "**/*", "input": "node_modules/ngx-monaco-editor/assets/monaco", "output": "./assets/monaco/" }
             ],
             "styles": [
               "src/styles.scss"
             ],
-            "scripts": [
-              "node_modules/ace-builds/src-min/ace.js"
-            ]
+            "scripts": []
           },
           "configurations": {
             "production": {

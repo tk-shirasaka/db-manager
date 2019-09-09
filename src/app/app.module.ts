@@ -12,7 +12,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 
-import { AceEditorModule } from 'ng2-ace-editor';
+import { MonacoEditorModule } from 'ngx-monaco-editor';
 
 import { AppRoutingModule } from './app-routing.module';
 
@@ -49,7 +49,7 @@ import { ColumnsComponent } from './columns/columns.component';
     MatInputModule,
     MatSelectModule,
 
-    AceEditorModule,
+    MonacoEditorModule.forRoot(),
 
     AppRoutingModule,
   ],
