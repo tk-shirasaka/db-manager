@@ -20,7 +20,7 @@
         <router-outlet></router-outlet>
       </div>
     </div>
-    <i class="fas fa-plus text-success" (click)="addConnection()"></i>
+    <i class="fas fa-plus text-success" [routerLink]="['/', connections.length]" (click)="(edit = true) && setConnection(connections.length)"></i>
   </mat-drawer>
 
   <mat-drawer-content class="p-4">

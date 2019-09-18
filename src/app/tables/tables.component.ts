@@ -4,7 +4,6 @@ import { ActivatedRoute } from '@angular/router';
 import { ParamsService } from '../params.service';
 import { ConnectionService } from '../connection.service';
 import { Connection } from '../connection';
-import { TableService } from '../table.service';
 
 @Component({
   selector: 'app-tables',
@@ -22,8 +21,7 @@ export class TablesComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private paramsService: ParamsService,
-    private connectionService: ConnectionService,
-    private tableService: TableService
+    private connectionService: ConnectionService
   ) { }
 
   ngOnInit() {

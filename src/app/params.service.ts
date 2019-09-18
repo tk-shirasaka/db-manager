@@ -34,17 +34,19 @@ export class ParamsService {
     this.setParams({ connection: null, tables: [], table: null, columns: [], selected: [] });
   }
 
-  setConnection(connection: number, params = {}) {
+  setConnection(index: number, params = {}) {
+    const tables = [];
     const table = null;
     const columns = [];
     const selected = [];
 
-    this.tableService.setConnection(connection, params).subscribe(tables => {
-      this.connectionService.setConnection(connection).subscribe(connection => {
+    this.connectionService.setConnection(index).subscribe(connection => {
+      this.setParams({ connection, tables, table, columns, selected });
+      this.tableService.setConnection(index, params).subscribe(tables => {
         this.setParams({ connection, tables, table, columns, selected });
       });
     });
-    this.queryService.setConnection(connection);
+    this.queryService.setConnection(index);
   }
 
   setTable(table: string, params = {}) {

@@ -29,7 +29,7 @@ export class ConnectionService extends ApiService {
     this.getConnections().subscribe(connections => {
       connections[this.connection] = connection;
       this.http.post<Connections>(`/api/connections`, connections.filter(connection => connection)).subscribe(_ => {
-        location.reload();
+        location.href = connection ? location.href : '/';
       });
     })
   }

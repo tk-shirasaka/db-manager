@@ -39,9 +39,4 @@ export class ConnectionsComponent implements OnInit {
   setConnection(connection: number, reflesh = false) {
     this.paramsService.setConnection(connection, reflesh ? { t: String((new Date).getTime()) } : {});
   }
-
-  addConnection() {
-    this.setConnection(this.connections.length);
-    this.edit = true;
-  }
 }
