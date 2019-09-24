@@ -1,5 +1,5 @@
 <mat-drawer-container class="h-100" autosize>
-  <mat-drawer class="p-2 bg-dark text-light" mode="side" opened>
+  <mat-drawer class="p-2 bg-dark text-light" mode="side" opened disableClose>
     <h5 class="m-4">DB Manager</h5>
     <div class="m-0" *ngFor="let connection of connections; index as i">
       <div *ngIf="connection !== selected">

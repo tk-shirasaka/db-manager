@@ -16,12 +16,12 @@ export class TableService extends ApiService {
     this.table = null;
     this.connection = connection;
 
-    return this.http.get<string[]>(`/api/tables/${this.connection}`, params);
+    return this.http.get<string[]>(`/api/tables/${this.connection}`, { params });
   }
 
   setTable(table: string, params: {[k: string]: string}): Observable<Column[]> {
     this.table = table;
 
-    return this.http.get<Column[]>(`/api/tables/${this.connection}/${this.table}`, params);
+    return this.http.get<Column[]>(`/api/tables/${this.connection}/${this.table}`, { params });
   }
 }

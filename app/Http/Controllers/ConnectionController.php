@@ -11,6 +11,7 @@ class ConnectionController extends Controller
 
     public function store()
     {
-        file_put_contents(storage_path('database.json'), json_encode(app('request')->input()));
+        $input = collect(app('request')->input())->sortBy(function($connection) { return $connection['description']; });
+        file_put_contents(storage_path('database.json'), $input->values()->toJson());
     }
 }

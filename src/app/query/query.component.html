@@ -28,7 +28,7 @@
 
 <mat-form-field *ngIf="table">
   <mat-select [(value)]="queryType" placeholder="操作">
-    <mat-option [value]="permission" [disabled]="connection.permissions.indexOf(permission) < 0" (click)="setTemplate()" *ngFor="let permission of permissions">{{ permission | uppercase }}</mat-option>
+    <mat-option [value]="permission" [disabled]="connection.permissions.indexOf(permission) < 0" (click)="ngOnInit()" *ngFor="let permission of permissions">{{ permission | uppercase }}</mat-option>
   </mat-select>
 </mat-form-field>
 <mat-form-field *ngIf="result.history">
