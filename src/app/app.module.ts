@@ -21,6 +21,7 @@ import { httpInterCeptorProviders } from './http-interceptors';
 import { AppComponent } from './app.component';
 import { EditComponent } from './edit/edit.component';
 import { QueryComponent } from './query/query.component';
+import { GroupsComponent } from './groups/groups.component';
 import { ConnectionsComponent } from './connections/connections.component';
 import { TablesComponent } from './tables/tables.component';
 import { ColumnsComponent } from './columns/columns.component';
@@ -30,6 +31,7 @@ import { ColumnsComponent } from './columns/columns.component';
     AppComponent,
     EditComponent,
     QueryComponent,
+    GroupsComponent,
     ConnectionsComponent,
     TablesComponent,
     ColumnsComponent,

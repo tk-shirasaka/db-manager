@@ -13,6 +13,9 @@
 
 /* Apis */
 $router->group(['prefix' => 'api'], function() use ($router) {
+    $router->get('/groups', 'GroupController@index');
+    $router->get('/groups/{no}', 'GroupController@select');
+    $router->post('/groups', 'GroupController@store');
     $router->get('/connections', 'ConnectionController@index');
     $router->post('/connections', 'ConnectionController@store');
     $router->get('/tables/{connection}', 'TableController@index');

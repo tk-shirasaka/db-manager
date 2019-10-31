@@ -21,6 +21,7 @@
       </div>
     </div>
     <i class="fas fa-plus text-success" [routerLink]="['/', connections.length]" (click)="(edit = true) && setConnection(connections.length)"></i>
+    <app-groups></app-groups>
   </mat-drawer>
 
   <mat-drawer-content class="p-4">
