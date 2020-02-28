@@ -10,7 +10,7 @@ describe('workspace-project App', () => {
 
   it('should display welcome message', () => {
     page.navigateTo();
-    expect(page.getTitleText()).toEqual('Welcome to db-manager!');
+    expect(page.getTitleText()).toEqual('db-manager app is running!');
   });
 
   afterEach(async () => {

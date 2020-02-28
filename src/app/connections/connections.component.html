@@ -1,6 +1,6 @@
 <mat-drawer-container class="h-100" autosize>
   <mat-drawer class="p-2 bg-dark text-light" mode="side" opened disableClose>
-    <h5 class="m-4">DB Manager</h5>
+    <h4 class="m-4">DB Manager</h4>
     <div class="m-0" *ngFor="let connection of connections; index as i">
       <div *ngIf="connection !== selected">
         <button class="btn text-light m-0 p-0" [routerLink]="['/', i]" (click)="setConnection(i)">
