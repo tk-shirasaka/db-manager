@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 
 import { Permissions } from '../permissions';
 import { Connection, FormType } from '../connection';
-import { ParamsService } from '../params.service';
 import { ConnectionService } from '../connection.service';
 
 @Component({
@@ -18,13 +18,15 @@ export class EditComponent implements OnInit {
   formTypes: {[k: string]: FormType} = {};
 
   constructor(
-    private paramsService: ParamsService,
+    private route: ActivatedRoute,
     private connectionService: ConnectionService
   ) { }
 
   ngOnInit() {
-    this.paramsService.getParams()
-      .subscribe(params => this.connection = Object.assign({}, params.connection));
+    const connection = +this.route.snapshot.paramMap.get('connection');
+
+    this.connectionService.getConnection(connection)
+      .subscribe(connection => this.connection = Object.assign({}, connection));
     this.connectionService.getTypes()
       .subscribe(formTypes => this.formTypes = formTypes);
   }

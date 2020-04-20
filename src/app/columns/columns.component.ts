@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 
-import { ParamsService } from '../params.service';
+import { TableService } from '../table.service';
 import { Column } from '../table';
 
 @Component({
@@ -12,29 +12,18 @@ import { Column } from '../table';
 export class ColumnsComponent implements OnInit {
 
   columns: Column[] = [];
-  selected: Column[] = [];
   filter: string;
 
   constructor(
     private route: ActivatedRoute,
-    private paramsService: ParamsService
+    private tableService: TableService
   ) { }
 
   ngOnInit() {
-    const table = this.route.snapshot.paramMap.get('table');
+    const { connection, table } = this.route.snapshot.params;
 
-    this.paramsService.setTable(table);
-    this.paramsService.getParams().subscribe(params => {
-      this.columns = params.columns;
-      this.selected = params.selected;
+    this.tableService.getColumns(connection, table).subscribe(columns => {
+      this.columns = columns;
     });
-  }
-
-  checkColumn(column: Column) {
-    return this.paramsService.checkColumn(column);
-  }
-
-  toggleColumn(column: Column) {
-    this.paramsService.toggleColumn(column);
   }
 }

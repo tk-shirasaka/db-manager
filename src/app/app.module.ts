@@ -25,6 +25,7 @@ import { GroupsComponent } from './groups/groups.component';
 import { ConnectionsComponent } from './connections/connections.component';
 import { TablesComponent } from './tables/tables.component';
 import { ColumnsComponent } from './columns/columns.component';
+import { PartsSidebarComponent } from './components/parts/sidebar/sidebar.component';
 
 @NgModule({
   declarations: [
@@ -35,6 +36,7 @@ import { ColumnsComponent } from './columns/columns.component';
     ConnectionsComponent,
     TablesComponent,
     ColumnsComponent,
+    PartsSidebarComponent,
   ],
   imports: [
     FormsModule,

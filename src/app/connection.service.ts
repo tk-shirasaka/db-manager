@@ -12,7 +12,7 @@ export class ConnectionService extends ApiService {
 
   private connection: number;
 
-  setConnection(connection: number): Observable<Connection> {
+  getConnection(connection: number): Observable<Connection> {
     this.connection = connection;
     return this.getConnections().pipe(map(connections => connections[connection] || new Connection));
   }

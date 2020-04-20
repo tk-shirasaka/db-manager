@@ -1,11 +1,9 @@
-<div class="ml-4">
+<app-parts-sidebar>
   <mat-form-field>
     <i class="fas fa-search position-absolute h-100 w-100" (click)="filter = ''"></i>
     <input matInput [(ngModel)]="filter" name="filter" class="pl-4">
   </mat-form-field>
-  <div (click)="toggleColumn(column)" *ngFor="let column of columns">
-    <button class="btn m-0 p-0" [class.text-light]="!checkColumn(column)" [class.text-warning]="checkColumn(column)" *ngIf="column.name.search(filter) >= 0">
-      {{ column.name }} : {{ column.type }}{{ column.length ? '('+column.length+')' : '' }} {{ column.notnull ? '' : 'NULL'}}
-    </button>
+  <div ngClass="m-0 p-0" *ngFor="let column of columns">
+    {{ column.name }} : {{ column.type }}{{ column.length ? '('+column.length+')' : '' }} {{ column.notnull ? '' : 'NULL'}}
   </div>
-</div>
+</app-parts-sidebar>

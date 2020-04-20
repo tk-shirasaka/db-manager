@@ -9,19 +9,17 @@ import { Column } from './table';
 })
 export class TableService extends ApiService {
 
-  private connection: number = null;
   private table: string = null;
 
-  setConnection(connection: number, params: {[k: string]: string}): Observable<string[]> {
+  getTables(connection: number, params: {[k: string]: string} = {}): Observable<string[]> {
     this.table = null;
-    this.connection = connection;
 
-    return this.http.get<string[]>(`/api/tables/${this.connection}`, { params });
+    return this.http.get<string[]>(`/api/tables/${connection}`, { params });
   }
 
-  setTable(table: string, params: {[k: string]: string}): Observable<Column[]> {
+  getColumns(connection: number, table: string, params: {[k: string]: string} = {}): Observable<Column[]> {
     this.table = table;
 
-    return this.http.get<Column[]>(`/api/tables/${this.connection}/${this.table}`, { params });
+    return this.http.get<Column[]>(`/api/tables/${connection}/${this.table}`, { params });
   }
 }
