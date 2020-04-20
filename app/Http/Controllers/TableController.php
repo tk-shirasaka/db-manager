@@ -14,8 +14,12 @@ class TableController extends Controller
     public function show($connection, $table)
     {
         return $this->connect($connection, function($db) use ($table) {
-            return collect($db->getDoctrineSchemaManager()->listTableDetails($table)->getColumns())->map(function($column) {
-                return ['type' => $column->getType()->getName()] + $column->toArray();
+            $tableDetail = $db->getDoctrineSchemaManager()->listTableDetails($table);
+            $primary = $tableDetail->getPrimaryKey()->getColumns();
+            return collect($tableDetail->getColumns())->map(function($column, $key) use ($primary) {
+                $type = $column->getType()->getName();
+                $primary = in_array($key, $primary);
+                return compact('type', 'primary') + $column->toArray();
             })->values();
         });
     }
