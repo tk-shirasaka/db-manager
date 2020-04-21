@@ -2,7 +2,7 @@
   <mat-drawer class="p-2 bg-dark text-light" mode="side" opened disableClose>
     <h3 class="m-4">DB Manager</h3>
     <div *ngFor="let path of paths; index as i; last as last">
-      <button [ngClass]="'btn m-0 p-0 ml-' + i" [class.text-light]="!last" [class.text-warning]="last" [routerLink]="path.href">
+      <button [ngClass]="'btn m-0 p-0 ml-' + (i * 2)" [class.text-light]="!last" [class.text-warning]="last" [routerLink]="path.href">
         <i class="fas" [class.text-info]="!last" [class.text-warning]="last" [ngClass]="path.icon"></i>
         {{ path.name }}
       </button>

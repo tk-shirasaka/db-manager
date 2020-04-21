@@ -4,13 +4,12 @@
     <input matInput [(ngModel)]="filter" name="filter" class="pl-4">
   </mat-form-field>
   <div *ngFor="let column of columns">
-    <ng-container *ngIf="column.name.search(filter) >= 0">
-      {{ column.name }} <i class="fas fa-key text-info float-right" *ngIf="column.primary"></i>
-      <div class="ml-2">
-        Type: {{ column.unsigned && 'unsigned' }} {{ column.type }}{{ column.length ? '('+column.length+')' : '' }} {{ column.notnull ? '' : 'NULL'}}
-      </div>
-      <div class="ml-2">Default : {{ column.default === null ? 'NULL' : column.default }}</div>
-      <div class="ml-2" *ngIf="column.autoincrement">Auto Increment</div>
-    </ng-container>
+    <div class="mb-2" *ngIf="column.name.search(filter) >= 0">
+      {{ column.name }}
+      <i class="mx-1 fas fa-key text-info" *ngIf="column.primary"></i>
+      <i class="mx-1 fas fa-angle-double-up text-danger" *ngIf="column.autoincrement"></i>
+      : {{ column.unsigned ? 'unsigned' : '' }} {{ column.type }}{{ column.length ? '('+column.length+')' : '' }} {{ column.notnull ? '' : 'NULL'}}
+      : <span class="text-info">{{ column.default === null ? 'NULL' : column.default }}</span>
+    </div>
   </div>
 </app-parts-sidebar>
