@@ -26,6 +26,7 @@ import { ConnectionsComponent } from './connections/connections.component';
 import { TablesComponent } from './tables/tables.component';
 import { ColumnsComponent } from './columns/columns.component';
 import { PartsSidebarComponent } from './components/parts/sidebar/sidebar.component';
+import { PartsIconComponent } from './parts/icon/icon.component';
 
 @NgModule({
   declarations: [
@@ -37,6 +38,7 @@ import { PartsSidebarComponent } from './components/parts/sidebar/sidebar.compon
     TablesComponent,
     ColumnsComponent,
     PartsSidebarComponent,
+    PartsIconComponent,
   ],
   imports: [
     FormsModule,

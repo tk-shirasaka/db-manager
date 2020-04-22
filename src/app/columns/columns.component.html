@@ -1,13 +1,13 @@
 <app-parts-sidebar>
   <mat-form-field>
-    <i class="fas fa-search position-absolute h-100 w-100" (click)="filter = ''"></i>
+    <app-parts-icon class="position-absolute h-100 w-100" icon="search" (click)="filter = ''"></app-parts-icon>
     <input matInput [(ngModel)]="filter" name="filter" class="pl-4">
   </mat-form-field>
   <div *ngFor="let column of columns">
     <div class="mb-2" *ngIf="column.name.search(filter) >= 0">
       {{ column.name }}
-      <i class="mx-1 fas fa-key text-info" *ngIf="column.primary"></i>
-      <i class="mx-1 fas fa-angle-double-up text-danger" *ngIf="column.autoincrement"></i>
+      <app-parts-icon icon="key" [info]="true" *ngIf="column.primary"></app-parts-icon>
+      <app-parts-icon icon="angle-double-up" [danger]="true" *ngIf="column.autoincrement"></app-parts-icon>
       : {{ column.unsigned ? 'unsigned' : '' }} {{ column.type }}{{ column.length ? '('+column.length+')' : '' }} {{ column.notnull ? '' : 'NULL'}}
       : <span class="text-info">{{ column.default === null ? 'NULL' : column.default }}</span>
     </div>
@@ -19,30 +19,36 @@
         <tr>
           <th>#</th>
           <ng-container *ngFor="let column of columns">
-            <th *ngIf="column.name.search(filter) >= 0">
+            <th (click)="selectSearch($event, column.name)" *ngIf="column.name.search(filter) >= 0">
               {{ column.name }}
+              <app-parts-icon icon="key" [info]="true" *ngIf="column.primary"></app-parts-icon>
+            </th>
+          </ng-container>
+        </tr>
+        <tr>
+          <th><app-parts-icon icon="trash" [danger]="true" (click)="clearWhere($event, true)"></app-parts-icon></th>
+          <ng-container *ngFor="let column of columns">
+            <th class="text-right" (click)="selectSearch($event, column.name)" *ngIf="column.name.search(filter) >= 0">
               <ng-container *ngIf="column.name === select">
-                <i class="mx-1 fas fa-check text-success" (click)="doneSearch()"></i>
-                <form *ngFor="let where of wheres[column.name]">
+                <form *ngFor="let where of wheres[column.name]; index as i" (submit)="doneSearch($event)">
                   <mat-form-field>
                     <mat-select [(value)]="where.op">
-                      <mat-option value="=">=</mat-option>
-                      <mat-option value="like">like</mat-option>
-                      <mat-option value="<"><</mat-option>
-                      <mat-option value="<="><=</mat-option>
-                      <mat-option value=">">></mat-option>
-                      <mat-option value=">=">>=</mat-option>
-                      <mat-option value="<>"><></mat-option>
+                      <mat-option [value]="op" *ngFor="let op of ['=', 'like', '<', '<=', '>', '>=', '<>']">{{ op }}</mat-option>
                     </mat-select>
                   </mat-form-field>
                   <mat-form-field>
                     <input matInput [(ngModel)]="where.value" name="value">
                   </mat-form-field>
+                  <app-parts-icon icon="check" [success]="true" (click)="doneSearch($event)"></app-parts-icon>
+                  <app-parts-icon icon="trash" [danger]="true" (click)="deleteWhere($event, column.name, i)"></app-parts-icon>
                 </form>
+                <app-parts-icon icon="plus" [success]="true" (click)="addWhere($event)"></app-parts-icon>
               </ng-container>
               <ng-container *ngIf="column.name !== select">
-                <i class="mx-1 fas fa-search" (click)="selectSearch(column.name)"></i>
-                <div *ngFor="let where of wheres[column.name]">{{ where.op }} {{ where.value }}</div>
+                <div *ngFor="let where of wheres[column.name]; index as i">
+                  {{ where.op }} {{ where.value }}
+                  <app-parts-icon icon="trash" [danger]="true" (click)="deleteWhere($event, column.name, i)"></app-parts-icon>
+                </div>
               </ng-container>
             </th>
           </ng-container>
@@ -52,7 +58,16 @@
         <tr *ngFor="let row of page.data; index as i">
           <th class="bg-dark text-light" >{{ i + 1 }}</th>
           <ng-container *ngFor="let column of columns">
-            <td *ngIf="column.name.search(filter) >= 0">{{ row[column.name] === null ? 'NULL' : row[column.name] }}</td>
+            <td (click)="selectEdit(i, column.name)" *ngIf="column.name.search(filter) >= 0">
+              <div *ngIf="edit && edit.idx === i && edit.column === column.name; else elseBlock">
+                <textarea matInput [(ngModel)]="edit.value"></textarea>
+                <div>
+                  <app-parts-icon icon="check" [success]="true" (click)="doneEdit($event)"></app-parts-icon>
+                  <app-parts-icon icon="times" [danger]="true" (click)="clearEdit()"></app-parts-icon>
+                </div>
+              </div>
+              <ng-template #elseBlock>{{ row[column.name] === null ? 'NULL' : row[column.name] }}</ng-template>
+            </td>
           </ng-container>
         </tr>
       </tbody>

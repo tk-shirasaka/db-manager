@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 
 import { TableService } from '../table.service';
-import { IPage, PagingService } from '../service';
+import { IPage, IWhere, PagingService } from '../service';
 import { Column } from '../table';
 
 @Component({
@@ -17,7 +17,8 @@ export class ColumnsComponent implements OnInit {
   page: IPage;
   filter: string;
   select: string;
-  wheres: { [k: string]: { column: string; op: string; value: string; }[] } = {};
+  edit?: { idx: number; column: string; value: string; };
+  wheres: IWhere = {};
 
   constructor(
     private route: ActivatedRoute,
@@ -32,30 +33,72 @@ export class ColumnsComponent implements OnInit {
       this.primary = columns.filter(column => column.primary);
       this.columns = columns;
     });
-    this.pagingService.getPage(connection, table, this.wheres).subscribe(page => {
+    this.pagingService.get(connection, table, this.wheres).subscribe(page => {
       this.page = page;
     });
   }
 
-  selectSearch(column: string) {
+  selectSearch(e: MouseEvent, column: string) {
     this.select = column;
 
-    if (!(column in this.wheres)) {
+    if (!this.wheres[column]?.length) {
       this.wheres[column] = [];
-      this.addWhere();
+      this.addWhere(e);
     }
   }
 
-  doneSearch() {
+  doneSearch(e: MouseEvent) {
     const { connection, table } = this.route.snapshot.params;
 
     this.select = '';
-    this.pagingService.getPage(connection, table, this.wheres).subscribe(page => {
+    this.pagingService.get(connection, table, this.wheres).subscribe(page => {
       this.page = page;
+    });
+
+    e.preventDefault();
+    e.stopPropagation();
+  }
+
+  addWhere(e: MouseEvent) {
+    this.wheres[this.select].push({ column: this.select, op: "=", value: "" });
+
+    e.preventDefault();
+    e.stopPropagation();
+  }
+
+  deleteWhere(e: MouseEvent, column: string, idx: number) {
+    this.wheres[column].splice(idx, 1);
+    this.doneSearch(e);
+  }
+
+  clearWhere(e: MouseEvent, search: boolean) {
+    this.wheres = {};
+    search && this.doneSearch(e);
+  }
+
+  selectEdit(idx: number, column: string) {
+    const value = this.page.data[idx][column];
+    this.edit = { idx, column, value };
+  }
+
+  doneEdit(e: MouseEvent) {
+    const { connection, table } = this.route.snapshot.params;
+    const { idx, column, value } = this.edit;
+    const wheres = this.wheres
+
+    this.clearWhere(e, false);
+    Object.keys(this.page.data[idx]).forEach(column => {
+      this.wheres[column] = [{ column, op: '=', value: this.page.data[idx][column] }];
+    });
+
+    this.pagingService.update(connection, table, column, value, this.wheres).subscribe(_ => {
+      this.wheres = wheres;
+      this.doneSearch(e);
+      this.clearEdit();
     });
   }
 
-  addWhere() {
-    this.wheres[this.select].push({ column: this.select, op: "=", value: "" });
+  clearEdit() {
+    delete(this.edit);
   }
 }

@@ -7,12 +7,20 @@ export interface IPage {
   data: { [k: string]: string }[];
 }
 
+export interface IWhere {
+  [k: string]: { column: string; op: string; value: string }[]
+}
+
 @Injectable({
   providedIn: 'root'
 })
 export class PagingService extends ApiService {
 
-  getPage(connection: number, table: string, where: { [k: string]: { column: string; op: string; value: string }[] }): Observable<IPage> {
-    return this.http.post<IPage>(`/api/page/${connection}/${table}`, where);
+  get(connection: number, table: string, where: IWhere): Observable<IPage> {
+    return this.http.post<IPage>(`/api/page/${connection}/${table}`, { where });
+  }
+
+  update(connection: number, table: string, column: string, value: string, where: IWhere): Observable<IPage> {
+    return this.http.post<IPage>(`/api/page/${connection}/${table}/update`, { where, column, value });
   }
 }

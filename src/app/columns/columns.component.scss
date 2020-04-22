@@ -4,7 +4,7 @@ table {
     white-space: nowrap;
     font-size: .8em;
 
-    thead th {
+    thead tr:first-child > th {
       z-index: 1;
     }
 
