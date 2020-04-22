@@ -12,4 +12,50 @@
       : <span class="text-info">{{ column.default === null ? 'NULL' : column.default }}</span>
     </div>
   </div>
+
+  <main *ngIf="page">
+    <table class="table table-sm table-striped table-responsive">
+      <thead class="thead-dark">
+        <tr>
+          <th>#</th>
+          <ng-container *ngFor="let column of columns">
+            <th *ngIf="column.name.search(filter) >= 0">
+              {{ column.name }}
+              <ng-container *ngIf="column.name === select">
+                <i class="mx-1 fas fa-check text-success" (click)="doneSearch()"></i>
+                <form *ngFor="let where of wheres[column.name]">
+                  <mat-form-field>
+                    <mat-select [(value)]="where.op">
+                      <mat-option value="=">=</mat-option>
+                      <mat-option value="like">like</mat-option>
+                      <mat-option value="<"><</mat-option>
+                      <mat-option value="<="><=</mat-option>
+                      <mat-option value=">">></mat-option>
+                      <mat-option value=">=">>=</mat-option>
+                      <mat-option value="<>"><></mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                  <mat-form-field>
+                    <input matInput [(ngModel)]="where.value" name="value">
+                  </mat-form-field>
+                </form>
+              </ng-container>
+              <ng-container *ngIf="column.name !== select">
+                <i class="mx-1 fas fa-search" (click)="selectSearch(column.name)"></i>
+                <div *ngFor="let where of wheres[column.name]">{{ where.op }} {{ where.value }}</div>
+              </ng-container>
+            </th>
+          </ng-container>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let row of page.data; index as i">
+          <th class="bg-dark text-light" >{{ i + 1 }}</th>
+          <ng-container *ngFor="let column of columns">
+            <td *ngIf="column.name.search(filter) >= 0">{{ row[column.name] === null ? 'NULL' : row[column.name] }}</td>
+          </ng-container>
+        </tr>
+      </tbody>
+    </table>
+  </main>
 </app-parts-sidebar>

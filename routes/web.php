@@ -20,6 +20,7 @@ $router->group(['prefix' => 'api'], function() use ($router) {
     $router->post('/connections', 'ConnectionController@store');
     $router->get('/tables/{connection}', 'TableController@index');
     $router->get('/tables/{connection}/{table}', 'TableController@show');
+    $router->post('/page/{connection}/{table}', 'PageController@index');
     $router->post('/query/{connection}', 'QueryController@index');
 });
 
