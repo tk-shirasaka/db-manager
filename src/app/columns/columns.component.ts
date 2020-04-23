@@ -13,7 +13,6 @@ import { Column } from '../table';
 export class ColumnsComponent implements OnInit {
 
   columns: Column[] = [];
-  primary: Column[] = [];
   page: IPage;
   filter: string;
   select: string;
@@ -30,7 +29,6 @@ export class ColumnsComponent implements OnInit {
     const { connection, table } = this.route.snapshot.params;
 
     this.tableService.getColumns(connection, table).subscribe(columns => {
-      this.primary = columns.filter(column => column.primary);
       this.columns = columns;
     });
     this.pagingService.get(connection, table, this.wheres).subscribe(page => {
@@ -71,9 +69,9 @@ export class ColumnsComponent implements OnInit {
     this.doneSearch(e);
   }
 
-  clearWhere(e: MouseEvent, search: boolean) {
+  clearWhere(e: MouseEvent) {
     this.wheres = {};
-    search && this.doneSearch(e);
+    this.doneSearch(e);
   }
 
   selectEdit(idx: number, column: string) {
@@ -84,15 +82,13 @@ export class ColumnsComponent implements OnInit {
   doneEdit(e: MouseEvent) {
     const { connection, table } = this.route.snapshot.params;
     const { idx, column, value } = this.edit;
-    const wheres = this.wheres
+    const wheres = {};
 
-    this.clearWhere(e, false);
     Object.keys(this.page.data[idx]).forEach(column => {
-      this.wheres[column] = [{ column, op: '=', value: this.page.data[idx][column] }];
+      wheres[column] = [{ column, op: '=', value: this.page.data[idx][column] }];
     });
 
     this.pagingService.update(connection, table, column, value, this.wheres).subscribe(_ => {
-      this.wheres = wheres;
       this.doneSearch(e);
       this.clearEdit();
     });

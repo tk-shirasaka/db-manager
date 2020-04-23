@@ -26,7 +26,7 @@
           </ng-container>
         </tr>
         <tr>
-          <th><app-parts-icon icon="trash" [danger]="true" (click)="clearWhere($event, true)"></app-parts-icon></th>
+          <th><app-parts-icon icon="trash" [danger]="true" (click)="clearWhere($event)"></app-parts-icon></th>
           <ng-container *ngFor="let column of columns">
             <th class="text-right" (click)="selectSearch($event, column.name)" *ngIf="column.name.search(filter) >= 0">
               <ng-container *ngIf="column.name === select">
