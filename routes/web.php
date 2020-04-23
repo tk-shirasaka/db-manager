@@ -22,6 +22,7 @@ $router->group(['prefix' => 'api'], function() use ($router) {
     $router->get('/tables/{connection}/{table}', 'TableController@show');
     $router->post('/page/{connection}/{table}', 'PageController@index');
     $router->post('/page/{connection}/{table}/update', 'PageController@update');
+    $router->post('/page/{connection}/{table}/delete', 'PageController@delete');
     $router->post('/query/{connection}', 'QueryController@index');
 });
 

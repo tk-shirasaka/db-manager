@@ -27,12 +27,7 @@
               <div class="text-right" *ngIf="column.name === select; else elseBlock">
                 <form *ngFor="let where of wheres[column.name]; index as i" (submit)="doneSearch($event)">
                   <mat-form-field>
-                    <mat-select [(value)]="where.op">
-                      <mat-option [value]="op" *ngFor="let op of ['=', 'like', '<', '<=', '>', '>=', '<>']">{{ op }}</mat-option>
-                    </mat-select>
-                  </mat-form-field>
-                  <mat-form-field>
-                    <input matInput [(ngModel)]="where.value" name="value">
+                    <input matInput [(ngModel)]="where.condition" name="condition">
                   </mat-form-field>
                   <app-parts-icon icon="check" [success]="true" (click)="doneSearch($event)"></app-parts-icon>
                   <app-parts-icon icon="trash" [danger]="true" (click)="deleteWhere($event, column.name, i)"></app-parts-icon>
@@ -41,7 +36,7 @@
               </div>
               <ng-template #elseBlock>
                 <div class="mt-1 text-right" *ngFor="let where of wheres[column.name]; index as i">
-                  {{ where.op }} {{ where.value }}
+                  {{ where.condition }}
                   <app-parts-icon icon="trash" [danger]="true" (click)="deleteWhere($event, column.name, i)"></app-parts-icon>
                 </div>
               </ng-template>
@@ -54,8 +49,9 @@
           <th class="bg-dark text-light text-right" >
             {{ i + 1 }}
             <ng-container *ngIf="edit && edit.idx === i; else elseBlock">
+              <app-parts-icon icon="times" [warning]="true" (click)="clearEdit($event)"></app-parts-icon>
               <app-parts-icon icon="check" [success]="true" (click)="doneEdit($event)"></app-parts-icon>
-              <app-parts-icon icon="times" [danger]="true" (click)="clearEdit($event)"></app-parts-icon>
+              <app-parts-icon icon="trash" [danger]="true" (click)="delete($event)"></app-parts-icon>
             </ng-container>
             <ng-template #elseBlock>
               <app-parts-icon icon="edit" (click)="selectEdit(i)"></app-parts-icon>

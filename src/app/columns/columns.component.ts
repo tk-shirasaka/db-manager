@@ -58,7 +58,7 @@ export class ColumnsComponent implements OnInit {
   }
 
   addWhere(e: MouseEvent) {
-    this.wheres[this.select].push({ column: this.select, op: "=", value: "" });
+    this.wheres[this.select].push({ column: this.select, condition: "" });
 
     e.preventDefault();
     e.stopPropagation();
@@ -76,7 +76,13 @@ export class ColumnsComponent implements OnInit {
 
   selectEdit(idx: number) {
     this.edit = { idx, data: JSON.parse(JSON.stringify(this.page.data[idx])) };
-    this.columns.forEach(column => column.autoincrement && delete(this.edit.data[column.name]));
+    this.columns.forEach(column => {
+      if (column.autoincrement) {
+        column.autoincrement && delete(this.edit.data[column.name]);
+      } else {
+        this.edit.data[column.name] = this.edit.data[column.name] === null ? 'NULL' : `'${this.edit.data[column.name]}'`;
+      }
+    });
   }
 
   doneEdit(e: MouseEvent) {
@@ -85,10 +91,25 @@ export class ColumnsComponent implements OnInit {
     const wheres = {};
 
     Object.keys(this.page.data[idx]).forEach(column => {
-      wheres[column] = [{ column, op: '=', value: this.page.data[idx][column] }];
+      wheres[column] = [{ column, condition: this.page.data[idx][column] === null ? 'IS NULL' : `= '${this.page.data[idx][column]}'` }];
     });
 
     this.pagingService.update(connection, table, data, wheres).subscribe(_ => {
+      this.doneSearch(e);
+      this.clearEdit(e);
+    });
+  }
+
+  delete(e: MouseEvent) {
+    const { connection, table } = this.route.snapshot.params;
+    const { idx } = this.edit;
+    const wheres = {};
+
+    Object.keys(this.page.data[idx]).forEach(column => {
+      wheres[column] = [{ column, condition: this.page.data[idx][column] === null ? 'IS NULL' : `= '${this.page.data[idx][column]}'` }];
+    });
+
+    this.pagingService.delete(connection, table, wheres).subscribe(_ => {
       this.doneSearch(e);
       this.clearEdit(e);
     });
