@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 
 import { TableService } from '../table.service';
-import { IPage, IWhere, PagingService } from '../service';
+import { IPage, IData, IWhere, PagingService } from '../service';
 import { Column } from '../table';
 
 @Component({
@@ -16,7 +16,7 @@ export class ColumnsComponent implements OnInit {
   page: IPage;
   filter: string;
   select: string;
-  edit?: { idx: number; column: string; value: string; };
+  edit?: { idx: number; data: IData };
   wheres: IWhere = {};
 
   constructor(
@@ -74,27 +74,30 @@ export class ColumnsComponent implements OnInit {
     this.doneSearch(e);
   }
 
-  selectEdit(idx: number, column: string) {
-    const value = this.page.data[idx][column];
-    this.edit = { idx, column, value };
+  selectEdit(idx: number) {
+    this.edit = { idx, data: JSON.parse(JSON.stringify(this.page.data[idx])) };
+    this.columns.forEach(column => column.autoincrement && delete(this.edit.data[column.name]));
   }
 
   doneEdit(e: MouseEvent) {
     const { connection, table } = this.route.snapshot.params;
-    const { idx, column, value } = this.edit;
+    const { idx, data } = this.edit;
     const wheres = {};
 
     Object.keys(this.page.data[idx]).forEach(column => {
       wheres[column] = [{ column, op: '=', value: this.page.data[idx][column] }];
     });
 
-    this.pagingService.update(connection, table, column, value, this.wheres).subscribe(_ => {
+    this.pagingService.update(connection, table, data, wheres).subscribe(_ => {
       this.doneSearch(e);
-      this.clearEdit();
+      this.clearEdit(e);
     });
   }
 
-  clearEdit() {
+  clearEdit(e: MouseEvent) {
     delete(this.edit);
+
+    e.preventDefault();
+    e.stopPropagation();
   }
 }

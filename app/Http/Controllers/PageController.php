@@ -23,8 +23,7 @@ class PageController extends Controller
     public function update($connection, $table)
     {
         return $this->connect($connection, function($db) use ($table) {
-            $request = app('request')->input();
-            return $this->query($db, $table)->update([$request['column'] => $request['value']]);
+            return $this->query($db, $table)->update(app('request')->input('data'));
         });
     }
 }

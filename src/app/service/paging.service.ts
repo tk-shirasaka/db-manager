@@ -3,8 +3,11 @@ import { Observable } from 'rxjs';
 
 import { ApiService } from '../api.service';
 
+export interface IData {
+  [k: string]: string;
+}
 export interface IPage {
-  data: { [k: string]: string }[];
+  data: IData;
 }
 
 export interface IWhere {
@@ -20,7 +23,7 @@ export class PagingService extends ApiService {
     return this.http.post<IPage>(`/api/page/${connection}/${table}`, { where });
   }
 
-  update(connection: number, table: string, column: string, value: string, where: IWhere): Observable<IPage> {
-    return this.http.post<IPage>(`/api/page/${connection}/${table}/update`, { where, column, value });
+  update(connection: number, table: string, data: IData, where: IWhere): Observable<IPage> {
+    return this.http.post<IPage>(`/api/page/${connection}/${table}/update`, { where, data });
   }
 }

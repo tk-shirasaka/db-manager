@@ -4,8 +4,9 @@ table {
     white-space: nowrap;
     font-size: .8em;
 
-    thead tr:first-child > th {
+    thead th {
       z-index: 1;
+      vertical-align: top;
     }
 
     th {
