@@ -1,0 +1,54 @@
+<table class="table table-sm table-striped table-responsive" *ngIf="page">
+  <thead class="thead-dark">
+    <tr>
+      <th class="text-right">
+        # <app-parts-icon icon="trash" [danger]="true" (click)="clearWhere($event)"></app-parts-icon>
+      </th>
+      <ng-container *ngFor="let column of columns">
+        <th (click)="selectSearch($event, column.name)" *ngIf="column.name.search(filter) >= 0">
+          {{ column.name }}
+          <app-parts-icon icon="key" [info]="true" *ngIf="column.primary"></app-parts-icon>
+          <div class="text-right" *ngIf="column.name === select; else elseBlock">
+            <form *ngFor="let where of wheres[column.name]; index as i" (submit)="doneSearch($event)">
+              <mat-form-field>
+                <input matInput [(ngModel)]="where.condition" name="condition">
+              </mat-form-field>
+              <app-parts-icon icon="check" [success]="true" (click)="doneSearch($event)"></app-parts-icon>
+              <app-parts-icon icon="trash" [danger]="true" (click)="deleteWhere($event, column.name, i)"></app-parts-icon>
+            </form>
+            <app-parts-icon icon="plus" [success]="true" (click)="addWhere($event)"></app-parts-icon>
+          </div>
+          <ng-template #elseBlock>
+            <div class="mt-1 text-right" *ngFor="let where of wheres[column.name]; index as i">
+              {{ where.condition }}
+              <app-parts-icon icon="trash" [danger]="true" (click)="deleteWhere($event, column.name, i)"></app-parts-icon>
+            </div>
+          </ng-template>
+        </th>
+      </ng-container>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let row of page.data; index as i">
+      <th class="bg-dark text-light text-right" >
+        {{ i + 1 }}
+        <ng-container *ngIf="edit && edit.idx === i; else elseBlock">
+          <app-parts-icon icon="times" [warning]="true" (click)="clearEdit($event)"></app-parts-icon>
+        <app-parts-icon icon="check" [success]="true" (click)="doneEdit($event)"></app-parts-icon>
+        <app-parts-icon icon="trash" [danger]="true" (click)="delete($event)"></app-parts-icon>
+        </ng-container>
+        <ng-template #elseBlock>
+          <app-parts-icon icon="edit" (click)="selectEdit(i)"></app-parts-icon>
+        </ng-template>
+      </th>
+      <ng-container *ngFor="let column of columns">
+        <td *ngIf="column.name.search(filter) >= 0">
+          <div *ngIf="edit && edit.idx === i && !column.autoincrement; else elseBlock">
+            <textarea matInput [(ngModel)]="edit.data[column.name]"></textarea>
+          </div>
+          <ng-template #elseBlock>{{ row[column.name] === null ? 'NULL' : row[column.name] }}</ng-template>
+        </td>
+      </ng-container>
+    </tr>
+  </tbody>
+</table>

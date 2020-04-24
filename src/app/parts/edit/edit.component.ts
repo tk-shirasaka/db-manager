@@ -1,16 +1,16 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 
-import { Permissions } from '../permissions';
-import { Connection, FormType } from '../connection';
-import { ConnectionService } from '../connection.service';
+import { Permissions } from '../../permissions';
+import { Connection, FormType } from '../../connection';
+import { ConnectionService } from '../../connection.service';
 
 @Component({
-  selector: 'app-edit',
+  selector: 'app-parts-edit',
   templateUrl: './edit.component.html',
   styleUrls: ['./edit.component.scss']
 })
-export class EditComponent implements OnInit {
+export class PartsEditComponent implements OnInit {
 
   connection: Connection;
 
