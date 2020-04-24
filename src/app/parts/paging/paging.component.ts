@@ -20,7 +20,7 @@ export class PaartsPagingComponent implements OnInit {
   select: string;
   page: IPage;
   wheres: IWhere = {};
-  edit?: { idx: number; data: IData };
+  edit?: { idx: number; data: IData, insert: boolean };
 
   constructor(
     private route: ActivatedRoute,
@@ -74,8 +74,15 @@ export class PaartsPagingComponent implements OnInit {
     this.doneSearch(e);
   }
 
+  insert() {
+    const idx = 0;
+    this.page.data.unshift({});
+    this.edit = { idx, data: {}, insert: true };
+  }
+
   selectEdit(idx: number) {
-    this.edit = { idx, data: JSON.parse(JSON.stringify(this.page.data[idx])) };
+    this.edit?.insert && this.page.data.shift() && idx--;
+    this.edit = { idx, data: JSON.parse(JSON.stringify(this.page.data[idx])), insert: false };
     this.columns.forEach(column => {
       if (column.autoincrement) {
         column.autoincrement && delete(this.edit.data[column.name]);
@@ -87,17 +94,22 @@ export class PaartsPagingComponent implements OnInit {
 
   doneEdit(e: MouseEvent) {
     const { connection, table } = this.route.snapshot.params;
-    const { idx, data } = this.edit;
-    const wheres = {};
+    const { idx, data, insert } = this.edit;
+    const callback = () => {
+        this.doneSearch(e);
+        this.clearEdit(e);
+    };
 
-    Object.keys(this.page.data[idx]).forEach(column => {
-      wheres[column] = [{ column, condition: this.page.data[idx][column] === null ? 'IS NULL' : `= '${this.page.data[idx][column]}'` }];
-    });
+    if (insert) {
+      this.pagingService.insert(connection, table, data).subscribe(callback);
+    } else {
+      const wheres = {};
 
-    this.pagingService.update(connection, table, data, wheres).subscribe(_ => {
-      this.doneSearch(e);
-      this.clearEdit(e);
-    });
+      Object.keys(this.page.data[idx]).forEach(column => {
+        wheres[column] = [{ column, condition: this.page.data[idx][column] === null ? 'IS NULL' : `= '${this.page.data[idx][column]}'` }];
+      });
+      this.pagingService.update(connection, table, data, wheres).subscribe(callback);
+    }
   }
 
   delete(e: MouseEvent) {

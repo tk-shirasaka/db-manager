@@ -24,6 +24,16 @@ class PageController extends Controller
         });
     }
 
+    public function insert($connection, $table)
+    {
+        return $this->connect($connection, function($db) use ($table) {
+            $data = array_map(function($data) {
+                return DB::raw($data);
+            }, app('request')->input('data'));
+            return +$db->table($table)->insert($data);
+        });
+    }
+
     public function update($connection, $table)
     {
         return $this->connect($connection, function($db) use ($table) {

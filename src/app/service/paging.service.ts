@@ -7,7 +7,7 @@ export interface IData {
   [k: string]: string;
 }
 export interface IPage {
-  data: IData;
+  data: IData[];
 }
 
 export interface IWhere {
@@ -21,6 +21,10 @@ export class PagingService extends ApiService {
 
   get(connection: number, table: string, where: IWhere): Observable<IPage> {
     return this.http.post<IPage>(`/api/page/${connection}/${table}`, { where });
+  }
+
+  insert(connection: number, table: string, data: IData): Observable<IPage> {
+    return this.http.post<IPage>(`/api/page/${connection}/${table}/insert`, { data });
   }
 
   update(connection: number, table: string, data: IData, where: IWhere): Observable<IPage> {

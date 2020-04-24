@@ -2,7 +2,9 @@
   <thead class="thead-dark">
     <tr>
       <th class="text-right">
-        # <app-parts-icon icon="trash" [danger]="true" (click)="clearWhere($event)"></app-parts-icon>
+        #
+        <app-parts-icon icon="trash" [danger]="true" (click)="clearWhere($event)"></app-parts-icon>
+        <app-parts-icon icon="plus" [success]="true" (click)="insert()"></app-parts-icon>
       </th>
       <ng-container *ngFor="let column of columns">
         <th (click)="selectSearch($event, column.name)" *ngIf="column.name.search(filter) >= 0">
