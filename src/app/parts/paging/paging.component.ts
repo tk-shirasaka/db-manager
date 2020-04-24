@@ -31,9 +31,19 @@ export class PaartsPagingComponent implements OnInit {
   ngOnInit() {
     const { connection, table } = this.route.snapshot.params;
 
-    this.pagingService.get(connection, table, this.wheres).subscribe(page => {
+    this.pagingService.get(connection, table, 1, this.wheres).subscribe(page => {
       this.page = page;
     });
+    delete(this.edit);
+  }
+
+  movePage(offset: number) {
+    const { connection, table } = this.route.snapshot.params;
+
+    this.pagingService.get(connection, table, this.page.current_page + offset, this.wheres).subscribe(page => {
+      this.page = page;
+    });
+    delete(this.edit);
   }
 
   selectSearch(e: MouseEvent, column: string) {
@@ -49,9 +59,10 @@ export class PaartsPagingComponent implements OnInit {
     const { connection, table } = this.route.snapshot.params;
 
     this.select = '';
-    this.pagingService.get(connection, table, this.wheres).subscribe(page => {
+    this.pagingService.get(connection, table, this.page.current_page, this.wheres).subscribe(page => {
       this.page = page;
     });
+    delete(this.edit);
 
     e.preventDefault();
     e.stopPropagation();

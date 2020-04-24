@@ -1,3 +1,8 @@
+<div *ngIf="page">
+  <app-parts-icon icon="angle-left" (click)="movePage(-1)" *ngIf="page.current_page > 1"></app-parts-icon>
+  {{ page.current_page }} / {{ page.last_page }} 合計 : {{ page.total }}件
+  <app-parts-icon icon="angle-right" (click)="movePage(1)" *ngIf="page.current_page < page.last_page"></app-parts-icon>
+</div>
 <table class="table table-sm table-striped table-responsive" *ngIf="page">
   <thead class="thead-dark">
     <tr>
