@@ -6,11 +6,10 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatTabsModule } from '@angular/material/tabs';
-import { MatButtonModule } from '@angular/material/button';
-import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
+import { MatDialogModule } from '@angular/material/dialog';
 
 import { MonacoEditorModule } from 'ngx-monaco-editor';
 
@@ -26,6 +25,7 @@ import { TablesComponent } from './tables/tables.component';
 import { ColumnsComponent } from './columns/columns.component';
 import { PartsSidebarComponent } from './components/parts/sidebar/sidebar.component';
 import { PartsIconComponent } from './parts/icon/icon.component';
+import { PartsDialogComponent } from './parts/dialog/dialog.component';
 import { PartsEditComponent } from './parts/edit/edit.component';
 import { PaartsPagingComponent } from './parts/paging/paging.component';
 
@@ -39,6 +39,7 @@ import { PaartsPagingComponent } from './parts/paging/paging.component';
     ColumnsComponent,
     PartsSidebarComponent,
     PartsIconComponent,
+    PartsDialogComponent,
     PartsEditComponent,
     PaartsPagingComponent,
   ],
@@ -51,11 +52,10 @@ import { PaartsPagingComponent } from './parts/paging/paging.component';
 
     MatSidenavModule,
     MatTabsModule,
-    MatButtonModule,
-    MatSnackBarModule,
     MatFormFieldModule,
     MatInputModule,
     MatSelectModule,
+    MatDialogModule,
 
     MonacoEditorModule.forRoot(),
 

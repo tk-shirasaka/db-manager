@@ -1,0 +1,13 @@
+<h3 mat-dialog-title>{{ data.title }}</h3>
+<div mat-dialog-content>
+  {{ data.contents }}
+</div>
+<div mat-dialog-actions>
+  <ng-container *ngIf="data.confirm; else elseBlock">
+    <button class="m-2 btn btn-secondary" (click)="onClose()">いいえ</button>
+    <button class="m-2 btn btn-primary" [mat-dialog-close]="true">はい</button>
+  </ng-container>
+  <ng-template #elseBlock>
+    <button class="m-2 btn btn-secondary" (click)="onClose()">閉じる</button>
+  </ng-template>
+</div>

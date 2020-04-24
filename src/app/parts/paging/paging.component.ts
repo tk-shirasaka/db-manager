@@ -1,8 +1,11 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { MatDialog } from '@angular/material/dialog';
 
 import { IPage, IData, IWhere, PagingService } from '../../service';
 import { Column } from '../../table';
+
+import { PartsDialogComponent } from '../dialog/dialog.component';
 
 @Component({
   selector: 'app-parts-paging',
@@ -21,6 +24,7 @@ export class PaartsPagingComponent implements OnInit {
 
   constructor(
     private route: ActivatedRoute,
+    private dialog: MatDialog,
     private pagingService: PagingService,
   ) { }
 
@@ -97,17 +101,24 @@ export class PaartsPagingComponent implements OnInit {
   }
 
   delete(e: MouseEvent) {
-    const { connection, table } = this.route.snapshot.params;
-    const { idx } = this.edit;
-    const wheres = {};
-
-    Object.keys(this.page.data[idx]).forEach(column => {
-      wheres[column] = [{ column, condition: this.page.data[idx][column] === null ? 'IS NULL' : `= '${this.page.data[idx][column]}'` }];
+    const dialogRef = this.dialog.open(PartsDialogComponent, {
+      width: '300px',
+      data: { confirm: true, title: '確認', contents: '本当に削除しますか？' },
     });
+    dialogRef.afterClosed().subscribe(result => {
+      if (!result) return;
+      const { connection, table } = this.route.snapshot.params;
+      const { idx } = this.edit;
+      const wheres = {};
 
-    this.pagingService.delete(connection, table, wheres).subscribe(_ => {
-      this.doneSearch(e);
-      this.clearEdit(e);
+      Object.keys(this.page.data[idx]).forEach(column => {
+        wheres[column] = [{ column, condition: this.page.data[idx][column] === null ? 'IS NULL' : `= '${this.page.data[idx][column]}'` }];
+      });
+
+      this.pagingService.delete(connection, table, wheres).subscribe(_ => {
+        this.doneSearch(e);
+        this.clearEdit(e);
+      });
     });
   }
 

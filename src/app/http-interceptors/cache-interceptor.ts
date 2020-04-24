@@ -1,19 +1,19 @@
 import { Injectable } from '@angular/core';
 import { HttpInterceptor, HttpHandler, HttpRequest, HttpResponse } from '@angular/common/http';
 
-import { MatSnackBar } from '@angular/material/snack-bar';
+import { MatDialog } from '@angular/material/dialog';
 
 import { of } from 'rxjs';
 import { tap, catchError, share } from 'rxjs/operators';
 
+import { PartsDialogComponent } from '../parts/dialog/dialog.component';
 
 @Injectable()
 export class CacheInterceptor implements HttpInterceptor {
 
   cache = new Map;
-  count = 0;
 
-  constructor(private snackBar: MatSnackBar) { }
+  constructor(private dialog: MatDialog) { }
 
   intercept<T>(req: HttpRequest<T>, next: HttpHandler) {
     const cache = this.cache.get(req.url);
@@ -30,7 +30,6 @@ export class CacheInterceptor implements HttpInterceptor {
       return cache.response ? of(cache.response) : cache.request;
     }
 
-    !this.count++ || this.snackBar.open('Loading...');
     return this.sendRequest<T>(req, next);
   }
 
@@ -41,7 +40,7 @@ export class CacheInterceptor implements HttpInterceptor {
       response: null,
       request: next.handle(req).pipe(
         tap(event => this.handleCache(cache, event)),
-        catchError(_ => this.handleError()),
+        catchError(res => this.handleError(res)),
         share()
       )
     };
@@ -53,13 +52,14 @@ export class CacheInterceptor implements HttpInterceptor {
   handleCache(cache, event) {
     if (event instanceof HttpResponse) {
       cache.response = event;
-      setTimeout(_ => --this.count || this.snackBar.dismiss(), 300);
     }
   }
 
-  handleError() {
-    this.count--;
-    setTimeout(_ => this.snackBar.open('Request failed', 'OK'), 300);
+  handleError(res) {
+    this.dialog.open(PartsDialogComponent, {
+      width: '80%',
+      data: { confirm: false, title: 'リクエストエラー', contents: res.error },
+    });
     return [];
   }
 }

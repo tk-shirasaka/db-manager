@@ -20,7 +20,7 @@ class PageController extends Controller
     public function index($connection, $table)
     {
         return $this->connect($connection, function($db) use ($table) {
-            return $this->query($db, $table)->paginate(100);
+            return $this->query($db, $table)->paginate(50);
         });
     }
 
