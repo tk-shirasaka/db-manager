@@ -24,9 +24,10 @@ export class PartsEditComponent implements OnInit {
 
   ngOnInit() {
     const connection = +this.route.snapshot.paramMap.get('connection');
+    const group = +this.route.snapshot.paramMap.get('group');
 
     this.connectionService.getConnection(connection)
-      .subscribe(connection => this.connection = Object.assign({}, connection));
+      .subscribe(connection => this.connection = Object.assign({ group }, connection));
     this.connectionService.getTypes()
       .subscribe(formTypes => this.formTypes = formTypes);
   }

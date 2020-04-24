@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 
+import { GroupService } from '../../../group.service';
 import { ConnectionService } from '../../../connection.service';
 
 @Component({
@@ -15,24 +16,34 @@ export class PartsSidebarComponent implements OnInit {
 
   constructor(
     private route: ActivatedRoute,
-    private connectionService: ConnectionService
+    private groupService: GroupService,
+    private connectionService: ConnectionService,
   ) { }
 
   ngOnInit(): void {
     const params = this.route.snapshot.params;
 
-    if ("connection" in params) {
-      this.connectionService.getConnection(params.connection).subscribe(connection => {
-        this.paths.unshift({
+    if ("group" in params) {
+      this.groupService.getGroups().subscribe(groups => {
+        this.paths.push({
           href: ["/"],
-          name: connection.description,
+          name: groups[params.group].description,
           icon: "fa-folder-open"
         })
       });
     }
+    if ("connection" in params) {
+      this.connectionService.getConnection(params.connection).subscribe(connection => {
+        this.paths.splice(1, 0, {
+          href: ["/", params.group],
+          name: connection.description,
+          icon: "fa-folder-open"
+        });
+      });
+    }
     if ("table" in params) {
       this.paths.push({
-        href: ["/", params.connection],
+        href: ["/", params.group, params.connection],
         name: params.table,
         icon: "fa-list"
       })

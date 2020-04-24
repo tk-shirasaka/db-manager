@@ -1,4 +1,4 @@
-<form (ngSubmit)="saveConnection(true)">
+<form *ngIf="connection" (ngSubmit)="saveConnection(true)">
   <div>
     <mat-form-field>
       <input matInput [(ngModel)]="connection.description" name="description" placeholder="説明">

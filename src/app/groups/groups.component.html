@@ -1,10 +1,10 @@
-<div class="m-1 p-1 border border-info rounded">
-  <div class="p-1" *ngFor="let group of groups; index as i">
-    <div class="w-100" *ngIf="!group.select">
-      <button class="btn btn-outline-info" (click)="setGroup(i)">{{ group.description }}</button>
-      <i class="m-2 fas fa-trash text-danger float-right" (click)="deleteGroup(i)"></i>
+<app-parts-sidebar>
+  <div class="m-0" *ngFor="let group of groups; index as i">
+    <div>
+      <button class="btn text-light m-0 p-0" [routerLink]="['/', i]">
+        <i class="fas fa-folder text-info"></i>
+        {{ group.description }}
+      </button>
     </div>
-    <input  class="w-100" matInput [(ngModel)]="group.description" name="description" (change)="saveGroups()" *ngIf="group.select">
   </div>
-  <i class="fas fa-plus text-success" (click)="addGroup()"></i>
-</div>
+</app-parts-sidebar>

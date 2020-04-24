@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 
 import { ConnectionService } from '../connection.service';
 import { Connection } from '../connection';
@@ -10,13 +11,18 @@ import { Connection } from '../connection';
 })
 export class ConnectionsComponent implements OnInit {
 
+  group: number;
   connections: Connection[] = [];
   selected: Connection;
   edit: boolean;
 
-  constructor(private connectionService: ConnectionService) { }
+  constructor(
+    private route: ActivatedRoute,
+    private connectionService: ConnectionService,
+  ) { }
 
   ngOnInit() {
+    this.group = +this.route.snapshot.paramMap.get('group');
     this.connectionService.getConnections()
       .subscribe(connections => this.connections = connections);
   }

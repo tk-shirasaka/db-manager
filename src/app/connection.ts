@@ -1,5 +1,6 @@
 export class Connection {
   database: string;
+  group: number;
   description: string;
   permission: number[];
   [key: string]: any;

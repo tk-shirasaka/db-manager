@@ -1,13 +1,11 @@
 <app-parts-sidebar>
   <div class="m-0" *ngFor="let connection of connections; index as i">
-    <div>
-      <button class="btn text-light m-0 p-0" [routerLink]="['/', i]">
+    <div *ngIf="connection.group === group">
+      <button class="btn text-light m-0 p-0" [routerLink]="['/', group, i]">
         <i class="fas fa-folder text-info"></i>
         {{ connection.description }}
       </button>
     </div>
-    <router-outlet></router-outlet>
   </div>
-  <i class="fas fa-plus text-success" [routerLink]="['/', connections.length]"></i>
-  <app-groups></app-groups>
+  <i class="fas fa-plus text-success" [routerLink]="['/', group, connections.length]"></i>
 </app-parts-sidebar>
