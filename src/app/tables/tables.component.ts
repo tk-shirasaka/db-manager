@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 
-import { TableService } from '../table.service';
+import { TableService } from '../service';
 
 @Component({
   selector: 'app-tables',

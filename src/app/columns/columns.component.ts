@@ -1,8 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 
-import { TableService } from '../table.service';
-import { Column } from '../table';
+import { IColumn, TableService } from '../service';
 
 @Component({
   selector: 'app-columns',
@@ -11,7 +10,7 @@ import { Column } from '../table';
 })
 export class ColumnsComponent implements OnInit {
 
-  columns: Column[] = [];
+  columns: IColumn[] = [];
   filter: string;
 
   constructor(

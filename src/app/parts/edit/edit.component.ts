@@ -1,9 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 
-import { Permissions } from '../../permissions';
-import { Connection, FormType } from '../../connection';
-import { ConnectionService } from '../../connection.service';
+import { Connection, IFormType, Permissions, ConnectionService } from '../../service';
 
 @Component({
   selector: 'app-parts-edit',
@@ -15,7 +13,7 @@ export class PartsEditComponent implements OnInit {
   connection: Connection;
 
   permissions = Permissions;
-  formTypes: {[k: string]: FormType} = {};
+  formTypes: {[k: string]: IFormType} = {};
 
   constructor(
     private route: ActivatedRoute,

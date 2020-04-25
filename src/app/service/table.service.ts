@@ -2,7 +2,17 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 
 import { ApiService } from './api.service';
-import { Column } from './table';
+
+export interface IColumn {
+  name: string;
+  type: string;
+  unsigned: boolean;
+  autoincrement: boolean;
+  primary: boolean;
+  default: any;
+  notnull: boolean;
+  length: number;
+}
 
 @Injectable({
   providedIn: 'root'
@@ -13,7 +23,7 @@ export class TableService extends ApiService {
     return this.http.get<string[]>(`/api/tables/${connection}`, { params });
   }
 
-  getColumns(connection: number, table: string, params: {[k: string]: string} = {}): Observable<Column[]> {
-    return this.http.get<Column[]>(`/api/tables/${connection}/${table}`, { params });
+  getColumns(connection: number, table: string, params: {[k: string]: string} = {}): Observable<IColumn[]> {
+    return this.http.get<IColumn[]>(`/api/tables/${connection}/${table}`, { params });
   }
 }

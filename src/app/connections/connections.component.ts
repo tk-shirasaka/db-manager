@@ -1,8 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 
-import { ConnectionService } from '../connection.service';
-import { Connection } from '../connection';
+import { Connection, ConnectionService } from '../service';
 
 @Component({
   selector: 'app-connections',

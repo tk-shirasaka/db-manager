@@ -2,8 +2,7 @@ import { Component, OnInit, Input } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
 
-import { IPage, IData, IWhere, PagingService } from '../../service';
-import { Column } from '../../table';
+import { IColumn, IPage, IData, IWhere, PagingService } from '../../service';
 
 import { PartsDialogComponent } from '../dialog/dialog.component';
 
@@ -14,7 +13,7 @@ import { PartsDialogComponent } from '../dialog/dialog.component';
 })
 export class PaartsPagingComponent implements OnInit {
 
-  @Input() columns: Column[];
+  @Input() columns: IColumn[];
   @Input() filter: string;
 
   select: string;

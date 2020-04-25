@@ -1,0 +1,36 @@
+<mat-tab-group>
+  <mat-tab label="クエリ">
+    <ngx-monaco-editor [options]="{theme: 'vs-dark', language: 'sql'}" [(ngModel)]="query.query" (keydown.control.enter)="execute()"></ngx-monaco-editor>
+  </mat-tab>
+  <mat-tab label="実行結果" *ngIf="query.data && query.data.length">
+    <mat-form-field>
+      <i class="fas fa-search position-absolute h-100 w-100" (click)="filter = ''"></i>
+      <input matInput [(ngModel)]="filter" name="filter" class="pl-4">
+    </mat-form-field>
+    <table class="table table-sm table-striped table-responsive">
+      <thead class="thead-dark">
+        <tr>
+          <th>#</th>
+          <th *ngFor="let header of headers()">{{ header }}</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let row of query.data; index as i">
+          <th class="bg-dark text-light" >{{ i + 1 }}</th>
+          <td *ngFor="let header of headers()">{{ row[header] === null ? 'NULL' : row[header] }}</td>
+        </tr>
+      </tbody>
+    </table>
+    {{ query.count }} 件中 {{ query.data.length }} 件のレコードを表示
+    <i class="fas fa-copy float-right text-warning" (click)="copy()"></i>
+  </mat-tab>
+</mat-tab-group>
+
+<mat-form-field *ngIf="query.history">
+  <mat-select [(value)]="query.query" placeholder="履歴">
+    <mat-option [value]="history" *ngFor="let history of query.history">{{ history }}</mat-option>
+  </mat-select>
+</mat-form-field>
+<i class="fas fa-play text-primary m-3" (click)="execute()"></i>
+
+<pre class="mt-2 alert alert-success" *ngIf="query.count">{{ query.count }} 件のレコードを処理しました</pre>

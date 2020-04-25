@@ -1,11 +1,8 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 
-import { ApiService } from '../api.service';
+import { IData, ApiService } from './api.service';
 
-export interface IData {
-  [k: string]: string;
-}
 export interface IPage {
   data: IData[];
   total: number;

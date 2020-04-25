@@ -18,7 +18,6 @@ import { AppRoutingModule } from './app-routing.module';
 import { httpInterCeptorProviders } from './http-interceptors';
 
 import { AppComponent } from './app.component';
-import { QueryComponent } from './query/query.component';
 import { GroupsComponent } from './groups/groups.component';
 import { ConnectionsComponent } from './connections/connections.component';
 import { TablesComponent } from './tables/tables.component';
@@ -26,13 +25,13 @@ import { ColumnsComponent } from './columns/columns.component';
 import { PartsSidebarComponent } from './components/parts/sidebar/sidebar.component';
 import { PartsIconComponent } from './parts/icon/icon.component';
 import { PartsDialogComponent } from './parts/dialog/dialog.component';
+import { PartsQueryComponent } from './parts/query/query.component';
 import { PartsEditComponent } from './parts/edit/edit.component';
 import { PaartsPagingComponent } from './parts/paging/paging.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    QueryComponent,
     GroupsComponent,
     ConnectionsComponent,
     TablesComponent,
@@ -40,6 +39,7 @@ import { PaartsPagingComponent } from './parts/paging/paging.component';
     PartsSidebarComponent,
     PartsIconComponent,
     PartsDialogComponent,
+    PartsQueryComponent,
     PartsEditComponent,
     PaartsPagingComponent,
   ],

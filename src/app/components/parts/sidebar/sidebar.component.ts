@@ -1,8 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 
-import { GroupService } from '../../../group.service';
-import { ConnectionService } from '../../../connection.service';
+import { GroupService, ConnectionService } from '../../../service';
 
 @Component({
   selector: 'app-parts-sidebar',

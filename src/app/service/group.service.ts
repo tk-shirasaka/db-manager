@@ -2,7 +2,11 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 
 import { ApiService } from './api.service';
-import { Group } from './group';
+
+export class Group {
+  description: string;
+  select: boolean;
+}
 
 @Injectable({
   providedIn: 'root'
